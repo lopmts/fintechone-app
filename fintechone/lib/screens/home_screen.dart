@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/accounts/accounts_summary_card.dart';
 import '../../widgets/home/home_header.dart';
 import '../../widgets/home/summary_card.dart';
+import '../../widgets/home/latest_transactions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,6 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushNamed(context, '/transaction_form');
               },
             ),
+            const SizedBox(height: 20),
+            const LatestTransactions(),
           ],
         ),
       ),
