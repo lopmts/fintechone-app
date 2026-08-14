@@ -61,7 +61,7 @@ class HomeHeader extends StatelessWidget {
             if (auth.isAuthenticated) {
               // Usuário autenticado: ir para perfil
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const ProfileUser()),
+                MaterialPageRoute(builder: (_) => const ProfileUserScreen()),
               );
             } else {
               // Não autenticado: perguntar se deseja criar conta
@@ -69,7 +69,9 @@ class HomeHeader extends StatelessWidget {
                 context: context,
                 builder: (ctx) => AlertDialog(
                   title: const Text('Criar conta'),
-                  content: const Text('Você ainda não tem uma conta. Deseja criar uma agora?'),
+                  content: const Text(
+                    'Você ainda não tem uma conta. Deseja criar uma agora?',
+                  ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(ctx).pop(false),

@@ -1,5 +1,12 @@
 import 'package:fintechone/providers/app_providers.dart';
+import 'package:fintechone/screens/auth/forgot_password_screen.dart';
+import 'package:fintechone/screens/auth/login_screen.dart';
+import 'package:fintechone/screens/auth/otp_request_screen.dart';
+import 'package:fintechone/screens/auth/register_screen.dart';
+import 'package:fintechone/screens/auth/reset_password_screen.dart';
+import 'package:fintechone/screens/auth/verify_code_screen.dart';
 import 'package:fintechone/screens/forms/account_form_screen.dart';
+import 'package:fintechone/screens/profile_user.dart';
 import 'package:fintechone/screens/settings/settings_screen.dart';
 import 'package:fintechone/screens/settings/theme_settings_screen.dart';
 import 'package:fintechone/theme/dynamic_color_wrapper.dart';
@@ -36,6 +43,16 @@ class _MyAppState extends State<MyApp> {
               '/settings/theme_settings_screen': (context) =>
                   const ThemeSettingsScreen(),
               '/transaction_form': (context) => const TransactionFormScreen(),
+
+              '/profile_user': (context) => const ProfileUserScreen(),
+              '/register': (context) => const RegisterScreen(),
+              '/login': (context) => const LoginScreen(),
+              '/forgot_password': (context) => const ForgotPasswordScreen(),
+              // '/reset_password': (context) => const ResetPasswordScreen(),
+              '/forgot_password_email_sent': (context) =>
+                  const ForgotPasswordScreen(),
+              '/otp_verification': (context) => const OtpRequestScreen(),
+              // '/verify_code': (context) => const VerifyCodeScreen(),
             },
           );
         },

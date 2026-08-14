@@ -1,3 +1,5 @@
+// lib/data/local/daos/transactions_dao.dart
+
 import 'package:drift/drift.dart';
 
 import '../database.dart';
@@ -12,11 +14,19 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
   TransactionsDao(super.db);
 
   // ── READ ──
+  // orderBy data desc: sem isso não existe "últimas transações" — seria
+  // uma ordem arbitrária do banco.
   Future<List<TransactionRow>> getAll() =>
-      (select(transactions)..where((t) => t.deletedAt.isNull())).get();
+      (select(transactions)
+            ..where((t) => t.deletedAt.isNull())
+            ..orderBy([(t) => OrderingTerm.desc(t.date)]))
+          .get();
 
   Stream<List<TransactionRow>> watchAll() =>
-      (select(transactions)..where((t) => t.deletedAt.isNull())).watch();
+      (select(transactions)
+            ..where((t) => t.deletedAt.isNull())
+            ..orderBy([(t) => OrderingTerm.desc(t.date)]))
+          .watch();
 
   Future<TransactionRow?> getById(String id) =>
       (select(transactions)..where((t) => t.id.equals(id))).getSingleOrNull();
