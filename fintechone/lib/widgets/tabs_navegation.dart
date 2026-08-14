@@ -1,5 +1,6 @@
 import 'package:fintechone/screens/home_screen.dart';
 import 'package:fintechone/screens/settings/settings_screen.dart';
+import 'package:fintechone/screens/transactions_screen.dart';
 import 'package:fintechone/shared/placeholder_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class _MainTabScreenState extends State<MainTabScreen> {
   // ação, não aba, pelo mesmo motivo.
   final List<Widget> _pages = const [
     HomeScreen(),
-    PlaceholderScreen(title: 'Transações'),
+    TransactionsScreen(),
     PlaceholderScreen(title: 'Relatórios'),
   ];
 
