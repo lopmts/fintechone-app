@@ -6,7 +6,6 @@
 import 'package:fintechone/controller/category_controller.dart';
 import 'package:fintechone/controller/summary_controller.dart';
 import 'package:fintechone/controller/transaction_controller.dart';
-import 'package:fintechone/database/enums.dart';
 import 'package:fintechone/network/api_client.dart';
 import 'package:fintechone/network/transaction_api.dart';
 import 'package:fintechone/providers/auth_provider.dart';
@@ -16,6 +15,7 @@ import 'package:fintechone/services/category_service.dart';
 import 'package:fintechone/services/summary_service.dart';
 import 'package:fintechone/services/transaction_service.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:io';
 import 'package:provider/provider.dart';
 
 import '../controller/account_controller.dart';
@@ -26,7 +26,17 @@ import '../services/connectivity_service.dart';
 import '../services/sync_gate_service.dart';
 import 'theme_provider.dart';
 
-const _backendBaseUrl = 'http://localhost:3333';
+final String _backendBaseUrl = Platform.isAndroid
+    ? 'http://192.168.18.11:3333/api'
+    : Platform.isIOS
+    ? 'http://localhost:3333/api'
+    : Platform.isWindows
+    ? 'http://localhost:3333/api'
+    : Platform.isLinux
+    ? 'http://localhost:3333/api'
+    : Platform.isMacOS
+    ? 'http://localhost:3333/api'
+    : throw UnsupportedError('Unsupported platform');
 
 class AppProviders extends StatelessWidget {
   AppProviders({super.key, required this.child})
@@ -42,9 +52,7 @@ class AppProviders extends StatelessWidget {
   // pode referenciar membros estáticos, não membros de instância.
   // Isso continua sendo uma única instância compartilhada por todo o app
   // (é um singleton de fato, já que AppProviders só é criado uma vez na raiz).
-  static final ApiClient apiClient = ApiClient(
-    baseUrl: 'https://localhost:3333/api',
-  );
+  static final ApiClient apiClient = ApiClient(baseUrl: _backendBaseUrl);
 
   // MESMA instância usada tanto pelo AuthRepository (login/registro) quanto
   // pelo Provider<TokenStorage> abaixo, que alimenta `auth.readToken` em

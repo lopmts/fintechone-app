@@ -25,7 +25,12 @@ class TransactionApi {
     final uri = Uri.parse(
       '$baseUrl/transactions?updatedSince=${since.toIso8601String()}',
     );
-    final res = await http.get(uri, headers: await _headers());
+    final token = await _getToken();
+    final headers = {
+      'Content-Type': 'application/json',
+      if (token != null) 'Authorization': 'Bearer $token',
+    };
+    final res = await http.get(uri, headers: headers);
     if (res.statusCode != 200) {
       throw const SyncFailure('Falha ao buscar transações atualizadas.');
     }
@@ -37,9 +42,14 @@ class TransactionApi {
 
   Future<void> push(TransactionModel transaction) async {
     final uri = Uri.parse('$baseUrl/transactions/${transaction.id}');
+    final token = await _getToken();
+    final headers = {
+      'Content-Type': 'application/json',
+      if (token != null) 'Authorization': 'Bearer $token',
+    };
     final res = await http.put(
       uri,
-      headers: await _headers(),
+      headers: headers,
       body: jsonEncode(transaction.toJson()),
     );
     if (res.statusCode != 200 && res.statusCode != 201) {
@@ -49,9 +59,15 @@ class TransactionApi {
 
   Future<void> delete(String id) async {
     final uri = Uri.parse('$baseUrl/transactions/$id');
-    final res = await http.delete(uri, headers: await _headers());
+    final token = await _getToken();
+    final headers = {
+      'Content-Type': 'application/json',
+      if (token != null) 'Authorization': 'Bearer $token',
+    };
+    final res = await http.delete(uri, headers: headers);
     if (res.statusCode != 200 && res.statusCode != 204) {
       throw SyncFailure('Falha ao remover a transação $id no backend.');
     }
   }
 }
+

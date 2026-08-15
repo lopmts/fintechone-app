@@ -1,6 +1,8 @@
 import 'package:fintechone/network/api_client.dart';
 import 'package:fintechone/models/auth_result.dart';
 import 'package:fintechone/models/auth_user.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 /// Espelha 1:1 as rotas registradas em `authRoutes` (`/api/auth/*`).
 ///
@@ -96,5 +98,20 @@ class AuthApiService {
   Future<AuthUser> me() async {
     final json = await _client.get('/auth/me');
     return AuthUser.fromJson(json['user'] as Map<String, dynamic>);
+  }
+
+  /// GET /auth/me using a provided token string. This bypasses ApiClient's
+  /// internal headers so boot-time auto-login can validate the saved token.
+  Future<AuthUser> meWithToken(String token) async {
+    final uri = Uri.parse('${_client.baseUrl}/auth/me');
+    final res = await http.get(
+      uri,
+      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'},
+    );
+    if (res.statusCode < 200 || res.statusCode >= 300) {
+      throw Exception('Failed to fetch /auth/me');
+    }
+    final jsonBody = jsonDecode(res.body) as Map<String, dynamic>;
+    return AuthUser.fromJson(jsonBody['user'] as Map<String, dynamic>);
   }
 }

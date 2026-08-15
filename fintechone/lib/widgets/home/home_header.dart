@@ -1,7 +1,7 @@
 import 'package:fintechone/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fintechone/screens/profile_user.dart';
+import 'package:fintechone/screens/profile_screen.dart';
 import 'package:fintechone/screens/auth/register_screen.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -61,7 +61,7 @@ class HomeHeader extends StatelessWidget {
             if (auth.isAuthenticated) {
               // Usuário autenticado: ir para perfil
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const ProfileUserScreen()),
+                MaterialPageRoute(builder: (_) => const ProfileScreen()),
               );
             } else {
               // Não autenticado: perguntar se deseja criar conta

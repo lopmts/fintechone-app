@@ -85,15 +85,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     '/pages/cache_management_screen',
                   ),
                 ),
-                _SettingsTile(
-                  icon: Icons.folder_open_outlined,
-                  title: 'Pasta de músicas',
-                  subtitle: 'Selecionar onde suas músicas ficam salvas',
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    '/pages/local_library_screen',
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -121,7 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: 'Logs',
                   subtitle: 'Ver logs do app para depuração',
                   onTap: () =>
-                      Navigator.pushNamed(context, '/pages/logs_screen'),
+                      Navigator.pushNamed(context, '/settings/logs_screen'),
                 ),
               ],
             ),

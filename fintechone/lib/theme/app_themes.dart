@@ -25,17 +25,6 @@ class AppTheme {
     );
   }
 
-  // Um cardTheme só, chamado tanto no light quanto no dark — não precisa
-  // saber se é AMOLED aqui: o DynamicColorWrapper já substitui
-  // surfaceContainer por um tom próprio antes de chegar aqui (ver
-  // _applyAmoledColors), então esse token já vem "certo" nos 3 casos
-  // (light, dark normal, dark AMOLED).
-  //
-  // surfaceTintColor: transparent é o pulo do gato — sem isso, o Material
-  // 3 mistura um verniz de `primary` por cima da cor conforme a elevação,
-  // e o fundo do card deixa de ser previsível (fica ilhado entre a cor que
-  // você pediu e essa mistura). Com elevation 0 + tint transparente, o
-  // card fica exatamente na cor do token, sem surpresa.
   static CardThemeData _cardTheme(ColorScheme scheme) {
     return CardThemeData(
       color: scheme.surfaceContainer,
@@ -46,11 +35,24 @@ class AppTheme {
   }
 
   static TextTheme get _textTheme {
-    return TextTheme(
-      displayLarge: const TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
-      titleLarge: GoogleFonts.oswald(fontSize: 30, fontStyle: FontStyle.normal),
-      bodyMedium: GoogleFonts.merriweather(),
-      displaySmall: GoogleFonts.pacifico(),
+    return GoogleFonts.interTextTheme(
+      const TextTheme(
+        displayLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.w700),
+        displayMedium: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
+        displaySmall: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+        headlineLarge: TextStyle(fontSize: 26, fontWeight: FontWeight.w700),
+        headlineMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+        headlineSmall: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+        titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+        bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+        bodySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+        labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        labelMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        labelSmall: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+      ),
     );
   }
 }

@@ -85,3 +85,4 @@ class ApiClient {
     throw ApiException.fromResponseBody(decoded, statusCode: response.statusCode);
   }
 }
+

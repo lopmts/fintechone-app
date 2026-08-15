@@ -31,6 +31,7 @@ export const listTransactionsSchema = z.object({
   type: z.enum(["EXPENSE", "INCOME", "TRANSFER"]).optional(),
   from: z.string().datetime().optional(),
   to: z.string().datetime().optional(),
+  updatedSince: z.string().datetime().optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });

@@ -94,7 +94,10 @@ class AuthRepository {
 
     _client.setAuthToken(token);
     try {
-      return await _api.me();
+      // Use meWithToken to perform a direct authenticated request using the
+      // stored token. This avoids relying on ApiClient._headers which may be
+      // a placeholder in some dev branches.
+      return await _api.meWithToken(token);
     } catch (_) {
       await logout();
       return null;
