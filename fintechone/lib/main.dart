@@ -13,6 +13,7 @@ import 'package:fintechone/theme/dynamic_color_wrapper.dart';
 import 'package:fintechone/widgets/tabs_navegation.dart';
 import 'package:flutter/material.dart';
 import 'package:fintechone/screens/forms/transaction_form_screen.dart';
+import 'package:fintechone/screens/transactions_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,6 +44,7 @@ class _MyAppState extends State<MyApp> {
               '/settings/theme_settings_screen': (context) =>
                   const ThemeSettingsScreen(),
               '/transaction_form': (context) => const TransactionFormScreen(),
+              '/transactions': (context) => const TransactionsScreen(),
 
               '/profile_user': (context) => const ProfileUserScreen(),
               '/register': (context) => const RegisterScreen(),

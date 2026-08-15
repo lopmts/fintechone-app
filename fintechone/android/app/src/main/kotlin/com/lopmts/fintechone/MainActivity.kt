@@ -1,4 +1,4 @@
-package com.example.fintechone
+package com.lopmts.fintechone
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -12,8 +12,10 @@ import 'verify_code_screen.dart';
 /// Tela "Criar conta" — mesmo layout do mockup original, agora ligada ao
 /// [AuthProvider] real (JWT via POST /auth/register).
 ///
-/// Traz validação de e-mail, senha forte (com checklist de requisitos em
-/// tempo real) e confirmação de senha. Usa o tema do app via [Theme.of].
+/// Dois fluxos, na mesma tela: com senha (JWT direto na volta do POST) ou
+/// só com código por e-mail (backend manda requiresVerification: true e a
+/// gente empilha [VerifyCodeScreen]). Quem decide qual é o [_useEmailCode].
+/// Usa o tema do app via [Theme.of].
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -29,6 +31,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmController = TextEditingController();
 
   String _password = '';
+
+  // Quando true, os campos de senha nem entram na árvore (não é só
+  // "desativar validação" — eles somem de vez, porque não fazem sentido
+  // nesse fluxo).
+  bool _useEmailCode = false;
 
   @override
   void dispose() {
@@ -50,14 +57,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final authenticated = await auth.register(
         name: _nameController.text.trim(),
         email: email,
-        password: _passwordController.text,
+        // null aqui é o gatilho: o backend só entra no fluxo de código por
+        // e-mail quando password vem ausente/vazio.
+        password: _useEmailCode ? null : _passwordController.text,
       );
       if (!mounted) return;
 
       if (authenticated) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Conta criada com sucesso!')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Conta criada com sucesso!')),
+        );
         Navigator.of(context).pop();
       } else {
         // Backend pediu confirmação por código (fluxo sem senha).
@@ -73,7 +82,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> _signInWithGoogle() async {
     // Ver observação em login_screen.dart — requer google_sign_in configurado.
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Configure o google_sign_in para habilitar este botão.')),
+      const SnackBar(
+        content: Text('Configure o google_sign_in para habilitar este botão.'),
+      ),
     );
   }
 
@@ -119,6 +130,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    _RegistrationModeToggle(
+                      useEmailCode: _useEmailCode,
+                      onChanged: (value) =>
+                          setState(() => _useEmailCode = value),
+                    ),
+                    if (_useEmailCode) ...[
+                      const SizedBox(height: 12),
+                      _EmailCodeHint(colorScheme: colorScheme, theme: theme),
+                    ],
+                    const SizedBox(height: 20),
                     if (auth.errorMessage != null) ...[
                       AuthErrorBanner(message: auth.errorMessage!),
                       const SizedBox(height: 16),
@@ -142,39 +163,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hintText: 'E-mail',
                       icon: Icons.mail_outline,
                       keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
+                      textInputAction: _useEmailCode
+                          ? TextInputAction.done
+                          : TextInputAction.next,
                       autofillHints: const [AutofillHints.email],
                       validator: AuthValidators.email,
                     ),
-                    const SizedBox(height: 14),
-                    AuthTextField(
-                      controller: _passwordController,
-                      hintText: 'Senha',
-                      icon: Icons.lock_outline,
-                      isPassword: true,
-                      textInputAction: TextInputAction.next,
-                      autofillHints: const [AutofillHints.newPassword],
-                      validator: AuthValidators.signUpPassword,
-                      onChanged: (value) => setState(() => _password = value),
-                    ),
-                    const SizedBox(height: 14),
-                    AuthTextField(
-                      controller: _confirmController,
-                      hintText: 'Confirmar senha',
-                      icon: Icons.lock_outline,
-                      isPassword: true,
-                      textInputAction: TextInputAction.done,
-                      autofillHints: const [AutofillHints.newPassword],
-                      validator: (value) => AuthValidators.confirmPassword(
-                        value,
-                        _passwordController.text,
+                    // Só entra na árvore no fluxo com senha — no fluxo de
+                    // código, o Form nem tenta validar esses campos.
+                    if (!_useEmailCode) ...[
+                      const SizedBox(height: 14),
+                      AuthTextField(
+                        controller: _passwordController,
+                        hintText: 'Senha',
+                        icon: Icons.lock_outline,
+                        isPassword: true,
+                        textInputAction: TextInputAction.next,
+                        autofillHints: const [AutofillHints.newPassword],
+                        validator: AuthValidators.signUpPassword,
+                        onChanged: (value) => setState(() => _password = value),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    _PasswordChecklist(password: _password),
+                      const SizedBox(height: 14),
+                      AuthTextField(
+                        controller: _confirmController,
+                        hintText: 'Confirmar senha',
+                        icon: Icons.lock_outline,
+                        isPassword: true,
+                        textInputAction: TextInputAction.done,
+                        autofillHints: const [AutofillHints.newPassword],
+                        validator: (value) => AuthValidators.confirmPassword(
+                          value,
+                          _passwordController.text,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      _PasswordChecklist(password: _password),
+                    ],
                     const SizedBox(height: 24),
                     PrimaryButton(
-                      label: 'Criar conta',
+                      label: _useEmailCode
+                          ? 'Enviar código por e-mail'
+                          : 'Criar conta',
                       loading: auth.isLoading,
                       onPressed: _submit,
                     ),
@@ -186,7 +215,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SwitchAuthText(
                       leadingText: 'Já tem uma conta? ',
                       actionText: 'Entrar',
-                      onTap: () => Navigator.of(context).maybePop(),
+                      onTap: () =>
+                          Navigator.of(context).pushReplacementNamed('/login'),
                     ),
                     const SizedBox(height: 24),
                     const LegalFooter(),
@@ -196,6 +226,74 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Alterna entre os dois fluxos de cadastro. Não guarda estado próprio —
+/// só repassa a escolha pro pai, mesmo padrão dos outros componentes de
+/// formulário do app (value + onChanged).
+class _RegistrationModeToggle extends StatelessWidget {
+  const _RegistrationModeToggle({
+    required this.useEmailCode,
+    required this.onChanged,
+  });
+
+  final bool useEmailCode;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SegmentedButton<bool>(
+      segments: const [
+        ButtonSegment(
+          value: false,
+          label: Text('Com senha'),
+          icon: Icon(Icons.lock_outline),
+        ),
+        ButtonSegment(
+          value: true,
+          label: Text('Código por e-mail'),
+          icon: Icon(Icons.mail_outline),
+        ),
+      ],
+      selected: {useEmailCode},
+      showSelectedIcon: false,
+      onSelectionChanged: (selection) => onChanged(selection.first),
+    );
+  }
+}
+
+class _EmailCodeHint extends StatelessWidget {
+  const _EmailCodeHint({required this.colorScheme, required this.theme});
+
+  final ColorScheme colorScheme;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: colorScheme.primaryContainer.withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.info_outline, size: 18, color: colorScheme.primary),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              'Vamos te enviar um código de 6 dígitos por e-mail pra '
+              'confirmar a conta — sem precisar criar senha agora.',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
