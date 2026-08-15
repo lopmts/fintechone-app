@@ -17,7 +17,28 @@ class SummaryService {
 
   /// Entradas/saídas de TODAS as contas, no mês corrente — equivalente ao
   /// bloco `month` do /summary.
-  Stream<({int income, int expense})> watchMonthFlows() {
+  Stream<({int expense, int income, int transfer})> watchMonthFlows() {
+    final (start, end) = _currentMonthRange();
+    return _transactionsDao.watchFlows(from: start, to: end);
+  }
+
+  /// Entradas/saídas de TODO o histórico, de todas as contas — combinado
+  /// com o saldo inicial de cada conta (feito no SummaryController), dá o
+  /// equivalente ao `accounts.totalRealBalance` do /summary.
+  Stream<({int expense, int income, int transfer})> watchAllTimeFlows() =>
+      _transactionsDao.watchFlows();
+
+  /// Despesas do mês corrente agrupadas por categoria — equivalente ao
+  /// `topSpendingCategories` do /summary, só que sem limitar a 5: aqui
+  /// mostra toda categoria com gasto no mês (o SummaryController decide o
+  /// que fazer com isso, incluindo calcular o % de cada uma).
+  Stream<List<({String categoryId, int totalCents})>>
+  watchMonthExpensesByCategory() {
+    final (start, end) = _currentMonthRange();
+    return _transactionsDao.watchExpensesByCategory(from: start, to: end);
+  }
+
+  (DateTime start, DateTime end) _currentMonthRange() {
     final now = DateTime.now();
     final start = DateTime(now.year, now.month, 1);
     final end = DateTime(
@@ -25,12 +46,6 @@ class SummaryService {
       now.month + 1,
       1,
     ).subtract(const Duration(milliseconds: 1));
-    return _transactionsDao.watchFlows(from: start, to: end);
+    return (start, end);
   }
-
-  /// Entradas/saídas de TODO o histórico, de todas as contas — combinado
-  /// com o saldo inicial de cada conta (feito no SummaryController), dá o
-  /// equivalente ao `accounts.totalRealBalance` do /summary.
-  Stream<({int income, int expense})> watchAllTimeFlows() =>
-      _transactionsDao.watchFlows();
 }

@@ -45,6 +45,12 @@ class TransactionCard extends StatelessWidget {
     }
     final subtitle = subtitleParts.join(' · ');
 
+    final typesTraduzidos = {
+      TransactionType.income: 'Receita',
+      TransactionType.expense: 'Despesa',
+      TransactionType.transfer: 'Transferência',
+    };
+
     return Card(
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
@@ -71,6 +77,12 @@ class TransactionCard extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                       overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      typesTraduzidos[transaction.type] ?? '',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
                     ),
                     if (subtitle.isNotEmpty) ...[
                       const SizedBox(height: 6),

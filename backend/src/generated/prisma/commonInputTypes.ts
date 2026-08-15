@@ -199,6 +199,13 @@ export type EnumAccountTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumAccountTypeFilter<$PrismaModel> | $Enums.AccountType
 }
 
+export type EnumBankTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.BankType | Prisma.EnumBankTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BankType[] | Prisma.ListEnumBankTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BankType[] | Prisma.ListEnumBankTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBankTypeFilter<$PrismaModel> | $Enums.BankType
+}
+
 export type DecimalFilter<$PrismaModel = never> = {
   equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   in?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[] | Prisma.ListDecimalFieldRefInput<$PrismaModel>
@@ -229,6 +236,16 @@ export type EnumAccountTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumAccountTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumAccountTypeFilter<$PrismaModel>
+}
+
+export type EnumBankTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BankType | Prisma.EnumBankTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BankType[] | Prisma.ListEnumBankTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BankType[] | Prisma.ListEnumBankTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBankTypeWithAggregatesFilter<$PrismaModel> | $Enums.BankType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBankTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBankTypeFilter<$PrismaModel>
 }
 
 export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -539,6 +556,13 @@ export type NestedEnumAccountTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumAccountTypeFilter<$PrismaModel> | $Enums.AccountType
 }
 
+export type NestedEnumBankTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.BankType | Prisma.EnumBankTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BankType[] | Prisma.ListEnumBankTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BankType[] | Prisma.ListEnumBankTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBankTypeFilter<$PrismaModel> | $Enums.BankType
+}
+
 export type NestedDecimalFilter<$PrismaModel = never> = {
   equals?: runtime.Decimal | runtime.DecimalJsLike | number | string | Prisma.DecimalFieldRefInput<$PrismaModel>
   in?: runtime.Decimal[] | runtime.DecimalJsLike[] | number[] | string[] | Prisma.ListDecimalFieldRefInput<$PrismaModel>
@@ -569,6 +593,16 @@ export type NestedEnumAccountTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumAccountTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumAccountTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumBankTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BankType | Prisma.EnumBankTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.BankType[] | Prisma.ListEnumBankTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.BankType[] | Prisma.ListEnumBankTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumBankTypeWithAggregatesFilter<$PrismaModel> | $Enums.BankType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBankTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBankTypeFilter<$PrismaModel>
 }
 
 export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {

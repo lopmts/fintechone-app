@@ -27,9 +27,28 @@ export const CategoryKey = {
 export type CategoryKey = (typeof CategoryKey)[keyof typeof CategoryKey]
 
 
+export const BankType = {
+  NUBANK: 'NUBANK',
+  ITAÚ: 'ITAÚ',
+  BRADESCO: 'BRADESCO',
+  SANTANDER: 'SANTANDER',
+  CAIXA: 'CAIXA',
+  BANCO_DO_BRASIL: 'BANCO_DO_BRASIL',
+  INTER: 'INTER',
+  C6_BANK: 'C6_BANK',
+  PAGBANK: 'PAGBANK',
+  NEXT: 'NEXT',
+  ORIGINAL: 'ORIGINAL',
+  OTHER: 'OTHER'
+} as const
+
+export type BankType = (typeof BankType)[keyof typeof BankType]
+
+
 export const TransactionType = {
   EXPENSE: 'EXPENSE',
-  INCOME: 'INCOME'
+  INCOME: 'INCOME',
+  TRANSFER: 'TRANSFER'
 } as const
 
 export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]

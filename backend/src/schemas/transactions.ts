@@ -11,7 +11,7 @@ const baseTransactionSchema = z.object({
   categoryKey: categoryKeySchema.optional(),
   description: z.string().min(1, "Descrição é obrigatória"),
   amount: z.number().positive("Valor deve ser positivo"),
-  type: z.enum(["EXPENSE", "INCOME"]),
+  type: z.enum(["EXPENSE", "INCOME", "TRANSFER"]),
   date: z.string().datetime().optional(),
 });
 
@@ -28,7 +28,7 @@ export const listTransactionsSchema = z.object({
   accountId: z.string().optional(),
   categoryId: z.string().optional(),
   categoryKey: categoryKeySchema.optional(),
-  type: z.enum(["EXPENSE", "INCOME"]).optional(),
+  type: z.enum(["EXPENSE", "INCOME", "TRANSFER"]).optional(),
   from: z.string().datetime().optional(),
   to: z.string().datetime().optional(),
   page: z.coerce.number().int().positive().default(1),

@@ -304,6 +304,7 @@ export type UserWhereInput = {
   deleteRequests?: Prisma.DeleteRequestListRelationFilter
   pushTokens?: Prisma.PushTokenListRelationFilter
   syncLogs?: Prisma.SyncLogListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -330,6 +331,7 @@ export type UserOrderByWithRelationInput = {
   deleteRequests?: Prisma.DeleteRequestOrderByRelationAggregateInput
   pushTokens?: Prisma.PushTokenOrderByRelationAggregateInput
   syncLogs?: Prisma.SyncLogOrderByRelationAggregateInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -359,6 +361,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   deleteRequests?: Prisma.DeleteRequestListRelationFilter
   pushTokens?: Prisma.PushTokenListRelationFilter
   syncLogs?: Prisma.SyncLogListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
 }, "id" | "email" | "codeuniq" | "googleId">
 
 export type UserOrderByWithAggregationInput = {
@@ -429,6 +432,7 @@ export type UserCreateInput = {
   deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -455,6 +459,7 @@ export type UserUncheckedCreateInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -481,6 +486,7 @@ export type UserUpdateInput = {
   deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -507,6 +513,7 @@ export type UserUncheckedUpdateInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -662,6 +669,20 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type UserCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.UserUpsertWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
 export type UserCreateNestedOneWithoutAccountsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
@@ -774,6 +795,126 @@ export type UserUpdateOneRequiredWithoutSyncLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSyncLogsInput, Prisma.UserUpdateWithoutSyncLogsInput>, Prisma.UserUncheckedUpdateWithoutSyncLogsInput>
 }
 
+export type UserCreateWithoutSessionsInput = {
+  id: string
+  name?: string | null
+  imageUrl?: string | null
+  email: string
+  codeuniq: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  googleId?: string | null
+  emailVerified?: boolean
+  currency?: string
+  isActive?: boolean
+  syncVersion?: number
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  financings?: Prisma.FinancingCreateNestedManyWithoutUserInput
+  verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput
+  deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput
+  pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput
+  syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSessionsInput = {
+  id: string
+  name?: string | null
+  imageUrl?: string | null
+  email: string
+  codeuniq: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  googleId?: string | null
+  emailVerified?: boolean
+  currency?: string
+  isActive?: boolean
+  syncVersion?: number
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput
+  verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput
+  deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput
+  pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput
+  syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+}
+
+export type UserUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  codeuniq?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  syncVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput
+  verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput
+  deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput
+  pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput
+  syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  codeuniq?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  syncVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput
+  verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput
+  deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput
+  pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput
+  syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutAccountsInput = {
   id: string
   name?: string | null
@@ -797,6 +938,7 @@ export type UserCreateWithoutAccountsInput = {
   deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -822,6 +964,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -863,6 +1006,7 @@ export type UserUpdateWithoutAccountsInput = {
   deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -888,6 +1032,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDeleteRequestsInput = {
@@ -913,6 +1058,7 @@ export type UserCreateWithoutDeleteRequestsInput = {
   verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDeleteRequestsInput = {
@@ -938,6 +1084,7 @@ export type UserUncheckedCreateWithoutDeleteRequestsInput = {
   verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDeleteRequestsInput = {
@@ -979,6 +1126,7 @@ export type UserUpdateWithoutDeleteRequestsInput = {
   verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeleteRequestsInput = {
@@ -1004,6 +1152,7 @@ export type UserUncheckedUpdateWithoutDeleteRequestsInput = {
   verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutVerificationCodesInput = {
@@ -1029,6 +1178,7 @@ export type UserCreateWithoutVerificationCodesInput = {
   deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVerificationCodesInput = {
@@ -1054,6 +1204,7 @@ export type UserUncheckedCreateWithoutVerificationCodesInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVerificationCodesInput = {
@@ -1095,6 +1246,7 @@ export type UserUpdateWithoutVerificationCodesInput = {
   deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVerificationCodesInput = {
@@ -1120,6 +1272,7 @@ export type UserUncheckedUpdateWithoutVerificationCodesInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTransactionsInput = {
@@ -1145,6 +1298,7 @@ export type UserCreateWithoutTransactionsInput = {
   deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -1170,6 +1324,7 @@ export type UserUncheckedCreateWithoutTransactionsInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -1211,6 +1366,7 @@ export type UserUpdateWithoutTransactionsInput = {
   deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -1236,6 +1392,7 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBudgetsInput = {
@@ -1261,6 +1418,7 @@ export type UserCreateWithoutBudgetsInput = {
   deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBudgetsInput = {
@@ -1286,6 +1444,7 @@ export type UserUncheckedCreateWithoutBudgetsInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBudgetsInput = {
@@ -1327,6 +1486,7 @@ export type UserUpdateWithoutBudgetsInput = {
   deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBudgetsInput = {
@@ -1352,6 +1512,7 @@ export type UserUncheckedUpdateWithoutBudgetsInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFinancingsInput = {
@@ -1377,6 +1538,7 @@ export type UserCreateWithoutFinancingsInput = {
   deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFinancingsInput = {
@@ -1402,6 +1564,7 @@ export type UserUncheckedCreateWithoutFinancingsInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFinancingsInput = {
@@ -1443,6 +1606,7 @@ export type UserUpdateWithoutFinancingsInput = {
   deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFinancingsInput = {
@@ -1468,6 +1632,7 @@ export type UserUncheckedUpdateWithoutFinancingsInput = {
   deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPushTokensInput = {
@@ -1493,6 +1658,7 @@ export type UserCreateWithoutPushTokensInput = {
   verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput
   deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPushTokensInput = {
@@ -1518,6 +1684,7 @@ export type UserUncheckedCreateWithoutPushTokensInput = {
   verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput
   deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput
   syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPushTokensInput = {
@@ -1559,6 +1726,7 @@ export type UserUpdateWithoutPushTokensInput = {
   verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput
   deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPushTokensInput = {
@@ -1584,6 +1752,7 @@ export type UserUncheckedUpdateWithoutPushTokensInput = {
   verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput
   deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput
   syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSyncLogsInput = {
@@ -1609,6 +1778,7 @@ export type UserCreateWithoutSyncLogsInput = {
   verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput
   deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSyncLogsInput = {
@@ -1634,6 +1804,7 @@ export type UserUncheckedCreateWithoutSyncLogsInput = {
   verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput
   deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput
   pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSyncLogsInput = {
@@ -1675,6 +1846,7 @@ export type UserUpdateWithoutSyncLogsInput = {
   verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput
   deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSyncLogsInput = {
@@ -1700,6 +1872,7 @@ export type UserUncheckedUpdateWithoutSyncLogsInput = {
   verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput
   deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput
   pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1716,6 +1889,7 @@ export type UserCountOutputType = {
   deleteRequests: number
   pushTokens: number
   syncLogs: number
+  sessions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1727,6 +1901,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   deleteRequests?: boolean | UserCountOutputTypeCountDeleteRequestsArgs
   pushTokens?: boolean | UserCountOutputTypeCountPushTokensArgs
   syncLogs?: boolean | UserCountOutputTypeCountSyncLogsArgs
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
 }
 
 /**
@@ -1795,6 +1970,13 @@ export type UserCountOutputTypeCountSyncLogsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.SyncLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1820,6 +2002,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   deleteRequests?: boolean | Prisma.User$deleteRequestsArgs<ExtArgs>
   pushTokens?: boolean | Prisma.User$pushTokensArgs<ExtArgs>
   syncLogs?: boolean | Prisma.User$syncLogsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1887,6 +2070,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   deleteRequests?: boolean | Prisma.User$deleteRequestsArgs<ExtArgs>
   pushTokens?: boolean | Prisma.User$pushTokensArgs<ExtArgs>
   syncLogs?: boolean | Prisma.User$syncLogsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1903,6 +2087,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     deleteRequests: Prisma.$DeleteRequestPayload<ExtArgs>[]
     pushTokens: Prisma.$PushTokenPayload<ExtArgs>[]
     syncLogs: Prisma.$SyncLogPayload<ExtArgs>[]
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2322,6 +2507,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   deleteRequests<T extends Prisma.User$deleteRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deleteRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeleteRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pushTokens<T extends Prisma.User$pushTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pushTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   syncLogs<T extends Prisma.User$syncLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$syncLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SyncLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2943,6 +3129,30 @@ export type User$syncLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.SyncLogScalarFieldEnum | Prisma.SyncLogScalarFieldEnum[]
+}
+
+/**
+ * User.sessions
+ */
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Session
+   */
+  select?: Prisma.SessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Session
+   */
+  omit?: Prisma.SessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
 }
 
 /**

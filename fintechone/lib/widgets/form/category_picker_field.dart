@@ -25,9 +25,23 @@ class CategoryPickerField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final categories = context.watch<CategoryController>().byType(
-      transactionType,
-    );
+    final controller = context.watch<CategoryController>();
+
+    List<CategoryModel> categories = controller.byType(transactionType);
+
+    if (transactionType == TransactionType.transfer) {
+      final incomeCategories = controller.byType(TransactionType.income);
+      final expenseCategories = controller.byType(TransactionType.expense);
+
+      final merged = <CategoryModel>[];
+      merged.addAll(incomeCategories);
+      for (final category in expenseCategories) {
+        if (!merged.any((item) => item.id == category.id)) {
+          merged.add(category);
+        }
+      }
+      categories = merged;
+    }
 
     CategoryModel? selected;
     for (final c in categories) {

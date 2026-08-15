@@ -1,3 +1,4 @@
+import 'package:fintechone/widgets/home/categories_summary_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,12 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               onAddAccount: () {
                 Navigator.pushNamed(context, '/account_form');
-                Navigator.pushNamed(context, '/transaction_form');
+              },
+            ),
+            const SizedBox(height: 20),
+            CategoriesSummaryCard(
+              onSeeAll: () {
+                // TODO: navegar pra uma tela "Categorias" dedicada
               },
             ),
             const SizedBox(height: 20),
@@ -54,18 +60,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text('Últimas transações', style: theme.textTheme.titleMedium),
                 const Spacer(),
                 TextButton(
-                  onPressed: () => Navigator.pushNamed(context, '/transactions'),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, '/transactions'),
                   child: const Text('Ver todas'),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
             if (recent.isEmpty)
               Card(
                 margin: EdgeInsets.zero,
                 child: Padding(
                   padding: const EdgeInsets.all(16),
-                  child: Text('Nenhuma transação registrada ainda', style: theme.textTheme.bodyMedium),
+                  child: Text(
+                    'Nenhuma transação registrada ainda',
+                    style: theme.textTheme.bodyMedium,
+                  ),
                 ),
               )
             else ...[
@@ -78,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {},
                 ),
                 const SizedBox(height: 8),
-              ]
+              ],
             ],
           ],
         ),

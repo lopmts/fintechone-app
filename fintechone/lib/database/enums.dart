@@ -4,7 +4,7 @@
 
 enum AccountType { checking, savings, credit, main }
 
-enum TransactionType { expense, income }
+enum TransactionType { expense, income, transfer }
 
 enum BudgetPeriod { weekly, monthly }
 

@@ -300,6 +300,7 @@ enum BankType {
 enum TransactionType {
   EXPENSE
   INCOME
+  TRANSFER
 }
 
 enum BudgetPeriod {

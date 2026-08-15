@@ -36,14 +36,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
           children: [
-            Text(
-              'Configurações',
-              style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onSurface,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: [
+                Row(
+                  children: [
+                    BackButton(color: theme.colorScheme.onSurface),
+                    Text(
+                      'Configurações',
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                  ],
+                ),
+                const SizedBox(height: 24),
+              ],
             ),
-            const SizedBox(height: 24),
 
             // Grupo: Aparência
             _SettingsGroup(

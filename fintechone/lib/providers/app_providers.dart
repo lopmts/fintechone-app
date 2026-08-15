@@ -142,21 +142,31 @@ class AppProviders extends StatelessWidget {
           update: (_, db, __) =>
               SummaryService(transactionsDao: db.transactionsDao),
         ),
-        ChangeNotifierProxyProvider2<
+        ChangeNotifierProxyProvider3<
           AccountService,
           SummaryService,
+          CategoryService,
           SummaryController
         >(
           create: (context) => SummaryController(
             accountService: context.read<AccountService>(),
             summaryService: context.read<SummaryService>(),
+            categoryService: context.read<CategoryService>(),
           ),
-          update: (_, accountService, summaryService, controller) =>
-              controller ??
-              SummaryController(
-                accountService: accountService,
-                summaryService: summaryService,
-              ),
+          update:
+              (
+                _,
+                accountService,
+                summaryService,
+                categoryService,
+                controller,
+              ) =>
+                  controller ??
+                  SummaryController(
+                    accountService: accountService,
+                    summaryService: summaryService,
+                    categoryService: categoryService,
+                  ),
         ),
       ],
       child: child,

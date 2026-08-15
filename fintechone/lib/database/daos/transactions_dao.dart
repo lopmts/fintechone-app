@@ -1,5 +1,3 @@
-// lib/data/local/daos/transactions_dao.dart
-
 import 'package:drift/drift.dart';
 
 import '../database.dart';
@@ -84,7 +82,7 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
   // muda), que devolve soma de entradas e soma de saídas. accountId nulo =
   // todas as contas; from/to nulos = todo o histórico (útil pra achar o
   // saldo real: soma de todas as transações desde sempre + saldo inicial).
-  Stream<({int income, int expense})> watchFlows({
+  Stream<({int income, int expense, int transfer})> watchFlows({
     String? accountId,
     DateTime? from,
     DateTime? to,
@@ -95,9 +93,11 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
     final expenseSum = transactions.amountCents.sum(
       filter: transactions.type.equalsValue(TransactionType.expense),
     );
-
+    final transferSum = transactions.amountCents.sum(
+      filter: transactions.type.equalsValue(TransactionType.transfer),
+    );
     final query = selectOnly(transactions)
-      ..addColumns([incomeSum, expenseSum])
+      ..addColumns([incomeSum, expenseSum, transferSum])
       ..where(transactions.deletedAt.isNull());
 
     if (accountId != null) {
@@ -114,7 +114,44 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
       (row) => (
         income: row.read(incomeSum) ?? 0,
         expense: row.read(expenseSum) ?? 0,
+        transfer: row.read(transferSum) ?? 0,
       ),
+    );
+  }
+
+  // ── AGREGAÇÃO (base do card "Categorias" da Home) ──
+  //
+  // Soma de despesas agrupada por categoria, dentro do período — mesma
+  // ideia do watchFlows, mas com groupBy em vez de filter, porque aqui
+  // queremos uma linha POR categoria (não um total só). Transação sem
+  // categoria (categoryId nulo) fica de fora — não tem como agrupar o que
+  // não tem chave.
+  Stream<List<({String categoryId, int totalCents})>> watchExpensesByCategory({
+    required DateTime from,
+    required DateTime to,
+  }) {
+    final totalExpr = transactions.amountCents.sum();
+
+    final query = selectOnly(transactions)
+      ..addColumns([transactions.categoryId, totalExpr])
+      ..where(
+        transactions.deletedAt.isNull() &
+            transactions.type.equalsValue(TransactionType.expense) &
+            transactions.categoryId.isNotNull() &
+            transactions.date.isBiggerOrEqualValue(from) &
+            transactions.date.isSmallerOrEqualValue(to),
+      )
+      ..groupBy([transactions.categoryId]);
+
+    return query.watch().map(
+      (rows) => rows
+          .map(
+            (row) => (
+              categoryId: row.read(transactions.categoryId)!,
+              totalCents: row.read(totalExpr) ?? 0,
+            ),
+          )
+          .toList(),
     );
   }
 }

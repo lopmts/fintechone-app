@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       child: DynamicColorWrapper(
         builder: (context, lightTheme, darkTheme, mode) {
           return MaterialApp(
-            title: 'FintechOne',
+            title: 'FinteChone',
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: mode,
