@@ -18,7 +18,8 @@ export async function transactionRoutes(app: FastifyInstance) {
     if (!result.success)
       return reply.status(400).send({ error: result.error.flatten() });
 
-    const { accountId, categoryId, type, from, to, page, limit, updatedSince } = result.data as any;
+    const { accountId, categoryId, type, from, to, page, limit, updatedSince } =
+      result.data as any;
 
     const where: any = {
       userId,
@@ -66,6 +67,8 @@ export async function transactionRoutes(app: FastifyInstance) {
   app.post("/", auth, async (request, reply) => {
     const { sub: userId } = request.user as { sub: string };
 
+    console.log(request.body);
+
     const result = createTransactionSchema.safeParse(request.body);
     if (!result.success) return reply.status(400).send({ error: result.error });
 
@@ -101,7 +104,7 @@ export async function transactionRoutes(app: FastifyInstance) {
 
     const transaction = await prisma.transaction.create({
       data: {
-        id: randomUUID(),
+        id: result.data.id ?? randomUUID(),
         ...rest,
         amount,
         type,
@@ -127,8 +130,11 @@ export async function transactionRoutes(app: FastifyInstance) {
     const { accountId, amount, type, date, categoryId, categoryKey, ...rest } =
       result.data;
 
-    const account = await prisma.account.findFirst({ where: { id: accountId, userId } });
-    if (!account) return reply.status(404).send({ error: "Conta não encontrada" });
+    const account = await prisma.account.findFirst({
+      where: { id: accountId, userId },
+    });
+    if (!account)
+      return reply.status(404).send({ error: "Conta não encontrada" });
 
     let selectedCategoryId: string;
 
@@ -136,15 +142,24 @@ export async function transactionRoutes(app: FastifyInstance) {
       const category = await prisma.category.findFirst({
         where: categoryId ? { id: categoryId } : { key: categoryKey },
       });
-      if (!category) return reply.status(404).send({ error: "Categoria não encontrada" });
+      if (!category)
+        return reply.status(404).send({ error: "Categoria não encontrada" });
       selectedCategoryId = category.id;
     } else {
-      const categories = await prisma.category.findMany({ select: { id: true, key: true } });
-      if (categories.length === 0) return reply.status(404).send({ error: "Nenhuma categoria disponível" });
-      selectedCategoryId = categories[Math.floor(Math.random() * categories.length)].id;
+      const categories = await prisma.category.findMany({
+        select: { id: true, key: true },
+      });
+      if (categories.length === 0)
+        return reply
+          .status(404)
+          .send({ error: "Nenhuma categoria disponível" });
+      selectedCategoryId =
+        categories[Math.floor(Math.random() * categories.length)].id;
     }
 
-    const exists = await prisma.transaction.findFirst({ where: { id, userId } });
+    const exists = await prisma.transaction.findFirst({
+      where: { id, userId },
+    });
     if (exists) {
       const transaction = await prisma.transaction.update({
         where: { id },

@@ -6,6 +6,7 @@ import {
 } from "./shared";
 
 const baseTransactionSchema = z.object({
+  id: z.string().uuid().optional(),
   accountId: z.string().min(1, "ID da conta é obrigatório"),
   categoryId: z.string().optional(),
   categoryKey: categoryKeySchema.optional(),
@@ -25,6 +26,7 @@ export const updateTransactionSchema = baseTransactionSchema
   .refine(categoryRefine, categoryRefineOptions);
 
 export const listTransactionsSchema = z.object({
+  id: z.string().uuid().optional(),
   accountId: z.string().optional(),
   categoryId: z.string().optional(),
   categoryKey: categoryKeySchema.optional(),

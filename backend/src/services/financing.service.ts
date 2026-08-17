@@ -37,6 +37,7 @@ export interface FinancingWithInstallments {
 }
 
 export interface CreateFinancingInput {
+  id?: string;
   userId: string;
   title?: string | null;
   amount: number;
@@ -236,6 +237,7 @@ export async function createFinancing(
 ): Promise<FinancingWithInstallments> {
   const financing = await prisma.financing.create({
     data: {
+      id: input.id,
       title: input.title || "",
       userId: input.userId,
       amount: new Prisma.Decimal(input.amount),

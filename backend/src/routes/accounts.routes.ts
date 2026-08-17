@@ -58,14 +58,13 @@ export async function accountRoutes(app: FastifyInstance) {
   // POST /accounts
   app.post("/", auth, async (request: FastifyRequest, reply: FastifyReply) => {
     const { sub: userId } = request.user as { sub: string };
-    console.log("request.body", request.body);
 
     const result = createAccountSchema.safeParse(request.body);
     if (!result.success)
       return reply.status(400).send({ error: result.error.flatten() });
 
     const account = await prisma.account.create({
-      data: { id: randomUUID(), ...result.data, userId },
+      data: { id: result.data.id ?? randomUUID(), ...result.data, userId },
     });
 
     return reply.status(201).send({
@@ -74,36 +73,49 @@ export async function accountRoutes(app: FastifyInstance) {
   });
 
   // PUT /accounts/:id  (upsert by client-provided id)
-  app.put("/:id", auth, async (request: FastifyRequest, reply: FastifyReply) => {
-    const { sub: userId } = request.user as { sub: string };
-    const { id } = request.params as { id: string };
+  app.put(
+    "/:id",
+    auth,
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { sub: userId } = request.user as { sub: string };
+      const { id } = request.params as { id: string };
 
-    const result = createAccountSchema.safeParse(request.body);
-    if (!result.success)
-      return reply.status(400).send({ error: result.error.flatten() });
+      const result = createAccountSchema.safeParse(request.body);
+      if (!result.success)
+        return reply.status(400).send({ error: result.error.flatten() });
 
-    // check if exists for this user
-    const exists = await prisma.account.findFirst({ where: { id, userId } });
-    if (exists) {
-      const account = await prisma.account.update({ where: { id }, data: result.data });
-      const txBalance = await computeBalance(id);
-      return reply.send({
+      // check if exists for this user
+      const exists = await prisma.account.findFirst({ where: { id, userId } });
+      if (exists) {
+        const account = await prisma.account.update({
+          where: { id },
+          data: result.data,
+        });
+        const txBalance = await computeBalance(id);
+        return reply.send({
+          account: {
+            ...account,
+            initialBalance: account.initialBalance.toNumber(),
+            salary: account.salary?.toNumber() ?? null,
+            balance: txBalance.toNumber(),
+            realBalance: account.initialBalance.plus(txBalance).toNumber(),
+          },
+        });
+      }
+
+      // create with provided id and userId
+      const account = await prisma.account.create({
+        data: { id, ...result.data, userId },
+      });
+      return reply.status(201).send({
         account: {
           ...account,
-          initialBalance: account.initialBalance.toNumber(),
-          salary: account.salary?.toNumber() ?? null,
-          balance: txBalance.toNumber(),
-          realBalance: account.initialBalance.plus(txBalance).toNumber(),
+          balance: 0,
+          realBalance: account.initialBalance,
         },
       });
-    }
-
-    // create with provided id and userId
-    const account = await prisma.account.create({ data: { id, ...result.data, userId } });
-    return reply.status(201).send({
-      account: { ...account, balance: 0, realBalance: account.initialBalance },
-    });
-  });
+    },
+  );
 
   // GET /accounts/:id
   app.get(

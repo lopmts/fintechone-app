@@ -68,6 +68,7 @@ export async function authRoutes(app: FastifyInstance) {
         id: user.id,
         name: user.name,
         email: user.email,
+        imageUrl: user.imageUrl,
         codeuniq: user.codeuniq,
       },
       token,

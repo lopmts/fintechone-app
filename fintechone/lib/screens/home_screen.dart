@@ -1,3 +1,4 @@
+import 'package:fintechone/services/notification_service.dart';
 import 'package:fintechone/widgets/home/categories_summary_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,53 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final NotificationService _notificationService = NotificationService();
+  bool _showingPermissionPrompt = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _requestNotificationPermissionOnce();
+  }
+
+  /// Pede permissão de notificação apenas uma vez na inicialização
+  Future<void> _requestNotificationPermissionOnce() async {
+    // Se já pediu permissão anteriormente, não pede novamente
+    if (_notificationService.wasPermissionRequested) {
+      return;
+    }
+
+    final granted = await _notificationService.initializeAndRequestPermission();
+
+    if (!mounted) return;
+
+    // Mostra feedback visual apenas se o usuário negou a permissão
+    if (!granted && !_showingPermissionPrompt) {
+      _showingPermissionPrompt = true;
+      _showPermissionDeniedSnackbar();
+    }
+  }
+
+  /// Exibe snackbar quando permissão é negada
+  void _showPermissionDeniedSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text(
+          'Notificações desabilitadas. Ative nas configurações do app.',
+        ),
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          label: 'Configurações',
+          onPressed: () {
+            // TODO: Navegar para configurações do app
+            // openAppSettings(); // usar package:app_settings
+          },
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

@@ -1,6 +1,7 @@
 import 'package:fintechone/network/api_exception.dart';
 import 'package:fintechone/models/auth_user.dart';
 import 'package:fintechone/services/auth/auth_repository.dart';
+import 'package:fintechone/services/auth/google_auth_service.dart';
 import 'package:flutter/foundation.dart';
 
 enum AuthStatus {
@@ -199,6 +200,10 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> logout() async {
     await _repository.logout();
+    // Também sai da sessão do Google — senão, da próxima vez, o seletor de
+    // conta some e o Google entra direto com a conta anterior (útil se o
+    // objetivo é só desconectar do app, ruim se o objetivo é trocar de conta).
+    await GoogleAuthService.instance.signOut();
     _user = null;
     pendingVerificationEmail = null;
     _status = AuthStatus.unauthenticated;

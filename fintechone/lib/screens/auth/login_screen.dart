@@ -2,11 +2,13 @@ import 'package:fintechone/providers/auth_provider.dart';
 import 'package:fintechone/screens/auth/forgot_password_screen.dart';
 import 'package:fintechone/screens/auth/otp_request_screen.dart';
 import 'package:fintechone/screens/auth/verify_code_screen.dart';
+import 'package:fintechone/services/auth/google_auth_service.dart';
 import 'package:fintechone/utils/auth_validators.dart';
 import 'package:fintechone/widgets/auth_error_banner.dart';
 import 'package:fintechone/widgets/auth_shared.dart';
 import 'package:fintechone/widgets/auth_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import 'register_screen.dart';
@@ -28,6 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  bool _googleLoading = false;
 
   @override
   void dispose() {
@@ -88,23 +92,47 @@ class _LoginScreenState extends State<LoginScreen> {
     ).push(MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()));
   }
 
+  /// Fluxo completo: abre o seletor de conta do Google, pega o idToken e
+  /// manda pro backend via AuthProvider. Erros do backend (ex: e-mail do
+  /// Google não verificado) aparecem sozinhos via auth.errorMessage no
+  /// AuthErrorBanner acima do formulário — não precisa de SnackBar duplicado
+  /// pra isso.
   Future<void> _signInWithGoogle() async {
-    // Integração real requer o pacote `google_sign_in` configurado com o
-    // Client ID do Google Cloud (Android/iOS/Web). Exemplo:
-    //
-    // final googleUser = await GoogleSignIn().signIn();
-    // final googleAuth = await googleUser?.authentication;
-    // final idToken = googleAuth?.idToken;
-    // if (idToken == null) return;
-    // await context.read<AuthProvider>().loginWithGoogle(idToken: idToken);
-    //
-    // Deixado como TODO pois depende de configuração externa (Client IDs)
-    // que não faz parte da lógica de auth em si.
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Configure o google_sign_in para habilitar este botão.'),
-      ),
-    );
+    if (_googleLoading) return;
+    final auth = context.read<AuthProvider>();
+    auth.clearError();
+    setState(() => _googleLoading = true);
+
+    String? idToken;
+    try {
+      idToken = await GoogleAuthService.instance.signInAndGetIdToken();
+    } on GoogleSignInException catch (e) {
+      setState(() => _googleLoading = false);
+      // Cancelamento do usuário não é erro — não mostra nada.
+      if (e.code == GoogleSignInExceptionCode.canceled) return;
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Não foi possível continuar com o Google (${e.code.name})')),
+      );
+      return;
+    }
+
+    if (idToken == null) {
+      setState(() => _googleLoading = false);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Não foi possível obter o token do Google')),
+      );
+      return;
+    }
+
+    try {
+      await auth.loginWithGoogle(idToken: idToken);
+    } catch (_) {
+      // Erro do backend já populado em auth.errorMessage — exibido abaixo.
+    } finally {
+      if (mounted) setState(() => _googleLoading = false);
+    }
   }
 
   @override

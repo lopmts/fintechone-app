@@ -89,7 +89,7 @@ export async function budgetRoutes(app: FastifyInstance) {
 
     const budget = await prisma.budget.create({
       data: {
-        id: randomUUID(),
+        id: result.data.id ?? randomUUID(),
         ...rest,
         categoryId: resolvedCategoryId,
         userId,

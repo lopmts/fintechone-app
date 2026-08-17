@@ -6,6 +6,7 @@ import {
 } from "./shared";
 
 const baseBudgetSchema = z.object({
+  id: z.string().uuid().optional(),
   name: z.string().min(1, "Nome do orçamento é obrigatório"),
   categoryId: z.string().optional(),
   categoryKey: categoryKeySchema.optional(),

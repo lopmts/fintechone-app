@@ -68,6 +68,17 @@ class AccountModel {
     );
   }
 
+  Map<String, dynamic> toApiJson() => {
+    'id': id,
+    'name': name,
+    'type': type.name.toUpperCase(), // ← CONVERTE PARA MAIÚSCULO
+    'bank': bank.backendValue,
+    'initialBalance': initialBalance,
+    'salary': salary,
+    if (color != null) 'color': color, // ← SÓ ENVIA SE NÃO FOR NULL
+    if (icon != null) 'icon': icon, // ← SÓ ENVIA SE NÃO FOR NULL
+  };
+
   /// Igual [create], mas recebe os valores já em centavos — é o que os
   /// formulários com [MoneyFormField] devem usar, pra nunca passar por
   /// double na entrada de dinheiro.
@@ -113,7 +124,9 @@ class AccountModel {
   factory AccountModel.fromJson(Map<String, dynamic> json) => AccountModel(
     id: json['id'] as String,
     name: json['name'] as String,
-    type: AccountType.values.byName(json['type'] as String),
+    type: AccountType.values.byName(
+      (json['type'] as String).toLowerCase(),
+    ), // ← CONVERTE PARA MINÚSCULO ANTES DE BUSCAR
     bank: BankTypeX.fromBackendValue(json['bank'] as String?),
     initialBalanceCents: ((json['initialBalance'] as num) * 100).round(),
     salaryCents: json['salary'] == null

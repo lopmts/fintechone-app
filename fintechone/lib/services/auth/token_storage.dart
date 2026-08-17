@@ -11,7 +11,11 @@ class TokenStorage {
     : _storage =
           storage ??
           const FlutterSecureStorage(
-            aOptions: AndroidOptions(resetOnError: true),
+            aOptions: AndroidOptions(
+              migrateOnAlgorithmChange: true,
+
+              resetOnError: true,
+            ),
           );
 
   Future<void> saveToken(String token) =>

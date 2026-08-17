@@ -106,7 +106,10 @@ class AuthApiService {
     final uri = Uri.parse('${_client.baseUrl}/auth/me');
     final res = await http.get(
       uri,
-      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
     );
     if (res.statusCode < 200 || res.statusCode >= 300) {
       throw Exception('Failed to fetch /auth/me');

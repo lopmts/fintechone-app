@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fintechone/services/backup_service.dart';
+import 'package:fintechone/database/database.dart';
+import 'package:fintechone/network/account_api.dart';
+import 'package:fintechone/network/transaction_api.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -84,6 +91,179 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     context,
                     '/pages/cache_management_screen',
                   ),
+                ),
+                _SettingsTile(
+                  icon: Icons.cloud_upload_outlined,
+                  title: 'Backup (enviar dados ao servidor)',
+                  subtitle: 'Envia contas e transações como um backup',
+                  // Substitua a parte do showDialog e o código de backup por este:
+
+                  onTap: () async {
+                    // Abre um diálogo com progresso e roda o BackupService.
+                    final db = context.read<AppDatabase>();
+                    final accApi = context.read<AccountApi>();
+                    final txApi = context.read<TransactionApi>();
+                    final notifications = FlutterLocalNotificationsPlugin();
+
+                    double lastProgress = 0.0;
+                    String lastMessage = 'Iniciando...';
+                    bool running = true;
+
+                    // Referência para o serviço
+                    late final BackupService service;
+
+                    // Completer para controlar o cancelamento
+                    final cancelCompleter = Completer<void>();
+
+                    void Function(void Function())? dialogSetState;
+                    BuildContext? dialogContext;
+
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (ctx) {
+                        dialogContext = ctx;
+                        return StatefulBuilder(
+                          builder: (context, setState) {
+                            dialogSetState = setState;
+                            return AlertDialog(
+                              title: const Text('Backup de dados'),
+                              content: SizedBox(
+                                height: 140,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(lastMessage),
+                                    const SizedBox(height: 12),
+                                    LinearProgressIndicator(
+                                      value: lastProgress,
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      '${(lastProgress * 100).toStringAsFixed(0)}%',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                if (running) ...[
+                                  TextButton(
+                                    onPressed: () {
+                                      // Cancela o serviço
+                                      service.cancel();
+                                      // Completa o cancelamento
+                                      if (!cancelCompleter.isCompleted) {
+                                        cancelCompleter.complete();
+                                      }
+                                      // Atualiza UI
+                                      setState(() {
+                                        lastMessage = 'Cancelando...';
+                                      });
+                                    },
+                                    child: const Text('Cancelar'),
+                                  ),
+                                  TextButton(
+                                    onPressed: null,
+                                    child: const Text('Fechar'),
+                                  ),
+                                ] else ...[
+                                  TextButton(
+                                    onPressed: () {
+                                      if (dialogContext != null &&
+                                          Navigator.of(
+                                            dialogContext!,
+                                          ).canPop()) {
+                                        Navigator.of(dialogContext!).pop();
+                                      }
+                                    },
+                                    child: const Text('Fechar'),
+                                  ),
+                                ],
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    );
+
+                    // Cria o serviço
+                    service = BackupService(
+                      accountsDao: db.accountsDao,
+                      transactionsDao: db.transactionsDao,
+                      accountApi: accApi,
+                      transactionApi: txApi,
+                      notifications: notifications,
+                    );
+
+                    try {
+                      // Executa o backup com race contra o cancelamento
+                      final backupFuture = service.backupAll(
+                        onProgress: (progress, message) {
+                          lastProgress = progress;
+                          lastMessage = message;
+                          try {
+                            dialogSetState?.call(() {});
+                          } catch (_) {}
+                        },
+                      );
+
+                      // Aguarda o primeiro a completar: backup ou cancelamento
+                      final result = await Future.any([
+                        backupFuture.then((_) => 'completed'),
+                        cancelCompleter.future.then((_) => 'cancelled'),
+                      ]);
+
+                      running = false;
+
+                      if (result == 'cancelled') {
+                        // Se foi cancelado, espera o backup finalizar o cancelamento
+                        try {
+                          await backupFuture;
+                        } catch (_) {
+                          // Ignora erro de cancelamento
+                        }
+
+                        if (dialogContext != null &&
+                            Navigator.of(dialogContext!).canPop()) {
+                          Navigator.of(dialogContext!).pop();
+                        }
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Backup cancelado')),
+                        );
+                      } else {
+                        // Backup concluído com sucesso
+                        try {
+                          dialogSetState?.call(() {});
+                        } catch (_) {}
+
+                        if (dialogContext != null &&
+                            Navigator.of(dialogContext!).canPop()) {
+                          Navigator.of(dialogContext!).pop();
+                        }
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Backup concluído com sucesso'),
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      running = false;
+                      try {
+                        dialogSetState?.call(() {});
+                      } catch (_) {}
+
+                      if (dialogContext != null &&
+                          Navigator.of(dialogContext!).canPop()) {
+                        Navigator.of(dialogContext!).pop();
+                      }
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Erro no backup: $e')),
+                      );
+                    }
+                  },
                 ),
               ],
             ),

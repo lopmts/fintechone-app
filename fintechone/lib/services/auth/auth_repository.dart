@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:fintechone/network/api_client.dart';
+import 'package:fintechone/network/api_exception.dart';
 import 'package:fintechone/models/auth_result.dart';
 import 'package:fintechone/models/auth_user.dart';
 import 'package:fintechone/services/auth/auth_api_service.dart';
@@ -6,11 +9,7 @@ import 'package:fintechone/services/auth/token_storage.dart';
 
 /// Combina [AuthApiService] (HTTP) com [TokenStorage] (persistência local
 /// do token — a MESMA fonte que AccountApi/TransactionApi usam via
-/// `readToken: auth.readToken` no app_providers.dart).
-///
-/// Sempre que uma chamada retorna um token novo, ele é salvo pelo
-/// [TokenStorage] E injetado no [ApiClient] para as próximas requisições
-/// autenticadas feitas por este repository (ex: GET /auth/me).
+/// `getToken: auth.readToken` no app_providers.dart).
 class AuthRepository {
   final ApiClient _client;
   final AuthApiService _api;
@@ -87,25 +86,71 @@ class AuthRepository {
   }
 
   /// Tenta restaurar a sessão salva no boot do app.
-  /// Retorna `null` (e limpa o storage) se o token estiver ausente/expirado.
+  ///
+  /// Regra importante (o app é local-first): só limpa o token quando o
+  /// backend CONFIRMA que ele é inválido de verdade (401). Qualquer outro
+  /// problema — sem internet, timeout, servidor fora do ar, IP de LAN
+  /// inalcançável fora de casa — NÃO desloga o usuário. Nesse caso,
+  /// decodificamos os claims do próprio JWT (sub/email) pra devolver um
+  /// usuário "otimista", sem precisar do backend responder.
+  ///
+  /// Retorna `null` só quando: não há token salvo, OU o token é
+  /// comprovadamente inválido (401).
   Future<AuthUser?> tryAutoLogin() async {
     final token = await _authService.readToken();
     if (token == null) return null;
 
     _client.setAuthToken(token);
     try {
-      // Use meWithToken to perform a direct authenticated request using the
-      // stored token. This avoids relying on ApiClient._headers which may be
-      // a placeholder in some dev branches.
-      return await _api.meWithToken(token);
+      return await _api.me();
+    } on ApiException catch (e) {
+      if (e.isUnauthorized) {
+        await logout();
+        return null;
+      }
+      // Backend respondeu, mas não com 401 (500, 503, etc.) — mantém sessão.
+      return _decodeUserFromToken(token);
     } catch (_) {
-      await logout();
-      return null;
+      // Sem rede / timeout / host inalcançável — idem, mantém sessão.
+      return _decodeUserFromToken(token);
     }
   }
 
   Future<void> logout() async {
     await _authService.clear();
     _client.setAuthToken(null);
+  }
+
+  /// Lê `sub` (id) e `email` do payload do JWT SEM validar assinatura —
+  /// só pra ter algo pra mostrar offline. A validação de verdade é sempre
+  /// feita pelo backend (`app.authenticate` / `GET /me`) quando há rede.
+  AuthUser? _decodeUserFromToken(String token) {
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) return null;
+
+      final payload =
+          jsonDecode(_base64UrlDecode(parts[1])) as Map<String, dynamic>;
+      final id = payload['sub'] as String?;
+      final email = payload['email'] as String?;
+      if (id == null || email == null) return null;
+
+      return AuthUser(id: id, email: email);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  String _base64UrlDecode(String input) {
+    var output = input.replaceAll('-', '+').replaceAll('_', '/');
+    switch (output.length % 4) {
+      case 2:
+        output += '==';
+        break;
+      case 3:
+        output += '=';
+        break;
+    }
+    return utf8.decode(base64Url.decode(output));
   }
 }

@@ -9,6 +9,7 @@ import 'package:fintechone/screens/profile_screen.dart';
 import 'package:fintechone/screens/settings/logs_screen.dart';
 import 'package:fintechone/screens/settings/settings_screen.dart';
 import 'package:fintechone/screens/settings/theme_settings_screen.dart';
+import 'package:fintechone/services/auth/auth_bootstrapper.dart';
 import 'package:fintechone/theme/dynamic_color_wrapper.dart';
 import 'package:fintechone/widgets/tabs_navegation.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> {
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: mode,
-            home: const MainTabScreen(),
+            home: const AuthBootstrapper(child: MainTabScreen()),
             routes: {
               '/account_form': (context) => const AccountFormScreen(),
               '/settings/settings_screen': (context) => const SettingsScreen(),

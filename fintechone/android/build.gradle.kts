@@ -1,3 +1,6 @@
+// Removido: id("com.google.gms.google-services") version "4.5.0" apply false
+// (não é necessário — ver comentário em android/app/build.gradle.kts)
+
 allprojects {
     repositories {
         google()

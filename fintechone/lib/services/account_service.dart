@@ -8,6 +8,8 @@
 // resposta de rede pra salvar algo. Sync roda depois, em background,
 // só se o SyncGateService liberar.
 
+import 'package:flutter/foundation.dart' show debugPrint;
+
 import '../database/daos/accounts_dao.dart';
 import '../models/account_model.dart';
 import '../network/account_api.dart';
@@ -36,13 +38,15 @@ class AccountService {
   // ── Escrita (local primeiro, sync depois em background) ──
   Future<void> create(AccountModel account) async {
     await _dao.insertOne(account.toCompanion());
-    _trySyncInBackground(account);
+    // POST — é um registro que ainda não existe no backend.
+    _trySyncInBackground(() => _api.create(account));
   }
 
   Future<void> update(AccountModel account) async {
     final bumped = account.copyWith(syncVersion: account.syncVersion + 1);
     await _dao.updateOne(bumped.toCompanion());
-    _trySyncInBackground(bumped);
+    // PATCH — o registro já deveria existir no backend (foi criado antes).
+    _trySyncInBackground(() => _api.update(bumped));
   }
 
   Future<void> delete(String id) async {
@@ -52,17 +56,21 @@ class AccountService {
     // não precisa ser síncrona aqui.
   }
 
-  /// Dispara o envio pro backend sem travar a UI. Qualquer erro (sem
-  /// internet, token expirado, servidor fora) é engolido de propósito: o
-  /// dado já está salvo local, então uma falha de sync NUNCA pode virar
-  /// erro pro usuário. Fica pendente pra próxima tentativa.
-  void _trySyncInBackground(AccountModel account) {
+  /// Dispara [action] pro backend sem travar a UI. Qualquer erro (sem
+  /// internet, token expirado, servidor fora, rota errada) é engolido de
+  /// propósito: o dado já está salvo local, então uma falha de sync NUNCA
+  /// pode virar erro pro usuário — fica pendente pra próxima tentativa.
+  ///
+  /// O debugPrint é só pra você conseguir VER que algo falhou durante o
+  /// desenvolvimento — sem ele, um erro de rota (como o PUT que não
+  /// existia) fica invisível pra sempre, é exatamente o que te confundiu.
+  void _trySyncInBackground(Future<void> Function() action) {
     Future(() async {
       if (!await _syncGate.canSync()) return;
       try {
-        await _api.push(account);
-      } catch (_) {
-        // silenciado de propósito — ver comentário acima
+        await action();
+      } catch (e) {
+        debugPrint('[AccountService] sync falhou: $e');
       }
     });
   }

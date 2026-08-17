@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import 'package:fintechone/providers/auth_provider.dart';
+import 'package:fintechone/services/auth/google_auth_service.dart';
 import 'package:fintechone/utils/auth_validators.dart';
 import 'package:fintechone/widgets/auth_error_banner.dart';
 import 'package:fintechone/widgets/auth_shared.dart';
@@ -31,6 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmController = TextEditingController();
 
   String _password = '';
+  bool _googleLoading = false;
 
   // Quando true, os campos de senha nem entram na árvore (não é só
   // "desativar validação" — eles somem de vez, porque não fazem sentido
@@ -79,13 +82,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  /// Mesmo fluxo da LoginScreen: cadastro e login com Google são a mesma
+  /// chamada no backend (POST /auth/google cria a conta se ela não existir).
   Future<void> _signInWithGoogle() async {
-    // Ver observação em login_screen.dart — requer google_sign_in configurado.
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Configure o google_sign_in para habilitar este botão.'),
-      ),
-    );
+    if (_googleLoading) return;
+    final auth = context.read<AuthProvider>();
+    auth.clearError();
+    setState(() => _googleLoading = true);
+
+    String? idToken;
+    try {
+      idToken = await GoogleAuthService.instance.signInAndGetIdToken();
+    } on GoogleSignInException catch (e) {
+      setState(() => _googleLoading = false);
+      if (e.code == GoogleSignInExceptionCode.canceled) return;
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Não foi possível continuar com o Google (${e.code.name})')),
+      );
+      return;
+    }
+
+    if (idToken == null) {
+      setState(() => _googleLoading = false);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Não foi possível obter o token do Google')),
+      );
+      return;
+    }
+
+    try {
+      await auth.loginWithGoogle(idToken: idToken);
+      if (!mounted) return;
+      if (auth.status == AuthStatus.authenticated) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Conta criada/conectada com Google!')),
+        );
+        Navigator.of(context).pop();
+      }
+    } catch (_) {
+      // Erro do backend já populado em auth.errorMessage — exibido abaixo.
+    } finally {
+      if (mounted) setState(() => _googleLoading = false);
+    }
   }
 
   @override

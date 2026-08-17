@@ -26,7 +26,8 @@ class HomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-
+    final auth = context.read<AuthProvider>();
+    final user = auth.user;
     return Row(
       children: [
         IconButton(onPressed: onMenuTap, icon: const Icon(Icons.menu)),
@@ -57,12 +58,11 @@ class HomeHeader extends StatelessWidget {
               return;
             }
 
-            final auth = context.read<AuthProvider>();
             if (auth.isAuthenticated) {
               // Usuário autenticado: ir para perfil
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const ProfileScreen()),
-              );
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const ProfileScreen()));
             } else {
               // Não autenticado: perguntar se deseja criar conta
               final create = await showDialog<bool>(
@@ -99,10 +99,10 @@ class HomeHeader extends StatelessWidget {
                 CircleAvatar(
                   radius: 18,
                   backgroundColor: colorScheme.secondaryContainer,
-                  backgroundImage: avatarUrl != null
-                      ? NetworkImage(avatarUrl!)
+                  backgroundImage: user?.imageUrl != null
+                      ? NetworkImage(user!.imageUrl!)
                       : null,
-                  child: avatarUrl == null
+                  child: user?.imageUrl == null
                       ? Icon(
                           Icons.person,
                           color: colorScheme.onSecondaryContainer,
