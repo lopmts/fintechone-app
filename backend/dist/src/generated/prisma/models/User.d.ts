@@ -1,4 +1,5 @@
 import type * as runtime from "@prisma/client/runtime/library";
+import type * as $Enums from "../enums.js";
 import type * as Prisma from "../internal/prismaNamespace.js";
 /**
  * Model User
@@ -7,8 +8,16 @@ import type * as Prisma from "../internal/prismaNamespace.js";
 export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayload>;
 export type AggregateUser = {
     _count: UserCountAggregateOutputType | null;
+    _avg: UserAvgAggregateOutputType | null;
+    _sum: UserSumAggregateOutputType | null;
     _min: UserMinAggregateOutputType | null;
     _max: UserMaxAggregateOutputType | null;
+};
+export type UserAvgAggregateOutputType = {
+    syncVersion: number | null;
+};
+export type UserSumAggregateOutputType = {
+    syncVersion: number | null;
 };
 export type UserMinAggregateOutputType = {
     id: string | null;
@@ -17,13 +26,15 @@ export type UserMinAggregateOutputType = {
     email: string | null;
     codeuniq: string | null;
     password: string | null;
-    deletedAt: Date | null;
+    provider: $Enums.AuthProvider | null;
+    googleId: string | null;
+    emailVerified: boolean | null;
+    currency: string | null;
     isActive: boolean | null;
+    syncVersion: number | null;
+    deletedAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
-    googleId: string | null;
-    provider: string | null;
-    emailVerified: boolean | null;
 };
 export type UserMaxAggregateOutputType = {
     id: string | null;
@@ -32,13 +43,15 @@ export type UserMaxAggregateOutputType = {
     email: string | null;
     codeuniq: string | null;
     password: string | null;
-    deletedAt: Date | null;
+    provider: $Enums.AuthProvider | null;
+    googleId: string | null;
+    emailVerified: boolean | null;
+    currency: string | null;
     isActive: boolean | null;
+    syncVersion: number | null;
+    deletedAt: Date | null;
     createdAt: Date | null;
     updatedAt: Date | null;
-    googleId: string | null;
-    provider: string | null;
-    emailVerified: boolean | null;
 };
 export type UserCountAggregateOutputType = {
     id: number;
@@ -47,14 +60,22 @@ export type UserCountAggregateOutputType = {
     email: number;
     codeuniq: number;
     password: number;
-    deletedAt: number;
+    provider: number;
+    googleId: number;
+    emailVerified: number;
+    currency: number;
     isActive: number;
+    syncVersion: number;
+    deletedAt: number;
     createdAt: number;
     updatedAt: number;
-    googleId: number;
-    provider: number;
-    emailVerified: number;
     _all: number;
+};
+export type UserAvgAggregateInputType = {
+    syncVersion?: true;
+};
+export type UserSumAggregateInputType = {
+    syncVersion?: true;
 };
 export type UserMinAggregateInputType = {
     id?: true;
@@ -63,13 +84,15 @@ export type UserMinAggregateInputType = {
     email?: true;
     codeuniq?: true;
     password?: true;
-    deletedAt?: true;
+    provider?: true;
+    googleId?: true;
+    emailVerified?: true;
+    currency?: true;
     isActive?: true;
+    syncVersion?: true;
+    deletedAt?: true;
     createdAt?: true;
     updatedAt?: true;
-    googleId?: true;
-    provider?: true;
-    emailVerified?: true;
 };
 export type UserMaxAggregateInputType = {
     id?: true;
@@ -78,13 +101,15 @@ export type UserMaxAggregateInputType = {
     email?: true;
     codeuniq?: true;
     password?: true;
-    deletedAt?: true;
+    provider?: true;
+    googleId?: true;
+    emailVerified?: true;
+    currency?: true;
     isActive?: true;
+    syncVersion?: true;
+    deletedAt?: true;
     createdAt?: true;
     updatedAt?: true;
-    googleId?: true;
-    provider?: true;
-    emailVerified?: true;
 };
 export type UserCountAggregateInputType = {
     id?: true;
@@ -93,13 +118,15 @@ export type UserCountAggregateInputType = {
     email?: true;
     codeuniq?: true;
     password?: true;
-    deletedAt?: true;
+    provider?: true;
+    googleId?: true;
+    emailVerified?: true;
+    currency?: true;
     isActive?: true;
+    syncVersion?: true;
+    deletedAt?: true;
     createdAt?: true;
     updatedAt?: true;
-    googleId?: true;
-    provider?: true;
-    emailVerified?: true;
     _all?: true;
 };
 export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -140,6 +167,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      *
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType;
@@ -161,6 +200,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
     take?: number;
     skip?: number;
     _count?: UserCountAggregateInputType | true;
+    _avg?: UserAvgAggregateInputType;
+    _sum?: UserSumAggregateInputType;
     _min?: UserMinAggregateInputType;
     _max?: UserMaxAggregateInputType;
 };
@@ -171,14 +212,18 @@ export type UserGroupByOutputType = {
     email: string;
     codeuniq: string;
     password: string | null;
-    deletedAt: Date | null;
+    provider: $Enums.AuthProvider;
+    googleId: string | null;
+    emailVerified: boolean;
+    currency: string;
     isActive: boolean;
+    syncVersion: number;
+    deletedAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
-    googleId: string | null;
-    provider: string;
-    emailVerified: boolean;
     _count: UserCountAggregateOutputType | null;
+    _avg: UserAvgAggregateOutputType | null;
+    _sum: UserSumAggregateOutputType | null;
     _min: UserMinAggregateOutputType | null;
     _max: UserMaxAggregateOutputType | null;
 };
@@ -195,20 +240,24 @@ export type UserWhereInput = {
     email?: Prisma.StringFilter<"User"> | string;
     codeuniq?: Prisma.StringFilter<"User"> | string;
     password?: Prisma.StringNullableFilter<"User"> | string | null;
-    deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFilter<"User"> | $Enums.AuthProvider;
+    googleId?: Prisma.StringNullableFilter<"User"> | string | null;
+    emailVerified?: Prisma.BoolFilter<"User"> | boolean;
+    currency?: Prisma.StringFilter<"User"> | string;
     isActive?: Prisma.BoolFilter<"User"> | boolean;
+    syncVersion?: Prisma.IntFilter<"User"> | number;
+    deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
-    googleId?: Prisma.StringNullableFilter<"User"> | string | null;
-    provider?: Prisma.StringFilter<"User"> | string;
-    emailVerified?: Prisma.BoolFilter<"User"> | boolean;
     accounts?: Prisma.AccountListRelationFilter;
     budgets?: Prisma.BudgetListRelationFilter;
     transactions?: Prisma.TransactionListRelationFilter;
-    verificationCodes?: Prisma.VerificationCodeListRelationFilter;
     financings?: Prisma.FinancingListRelationFilter;
+    verificationCodes?: Prisma.VerificationCodeListRelationFilter;
     deleteRequests?: Prisma.DeleteRequestListRelationFilter;
     pushTokens?: Prisma.PushTokenListRelationFilter;
+    syncLogs?: Prisma.SyncLogListRelationFilter;
+    sessions?: Prisma.SessionListRelationFilter;
 };
 export type UserOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -217,20 +266,24 @@ export type UserOrderByWithRelationInput = {
     email?: Prisma.SortOrder;
     codeuniq?: Prisma.SortOrder;
     password?: Prisma.SortOrderInput | Prisma.SortOrder;
-    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    googleId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    emailVerified?: Prisma.SortOrder;
+    currency?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    syncVersion?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    googleId?: Prisma.SortOrderInput | Prisma.SortOrder;
-    provider?: Prisma.SortOrder;
-    emailVerified?: Prisma.SortOrder;
     accounts?: Prisma.AccountOrderByRelationAggregateInput;
     budgets?: Prisma.BudgetOrderByRelationAggregateInput;
     transactions?: Prisma.TransactionOrderByRelationAggregateInput;
-    verificationCodes?: Prisma.VerificationCodeOrderByRelationAggregateInput;
     financings?: Prisma.FinancingOrderByRelationAggregateInput;
+    verificationCodes?: Prisma.VerificationCodeOrderByRelationAggregateInput;
     deleteRequests?: Prisma.DeleteRequestOrderByRelationAggregateInput;
     pushTokens?: Prisma.PushTokenOrderByRelationAggregateInput;
+    syncLogs?: Prisma.SyncLogOrderByRelationAggregateInput;
+    sessions?: Prisma.SessionOrderByRelationAggregateInput;
 };
 export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -243,19 +296,23 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     name?: Prisma.StringNullableFilter<"User"> | string | null;
     imageUrl?: Prisma.StringNullableFilter<"User"> | string | null;
     password?: Prisma.StringNullableFilter<"User"> | string | null;
-    deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFilter<"User"> | $Enums.AuthProvider;
+    emailVerified?: Prisma.BoolFilter<"User"> | boolean;
+    currency?: Prisma.StringFilter<"User"> | string;
     isActive?: Prisma.BoolFilter<"User"> | boolean;
+    syncVersion?: Prisma.IntFilter<"User"> | number;
+    deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
-    provider?: Prisma.StringFilter<"User"> | string;
-    emailVerified?: Prisma.BoolFilter<"User"> | boolean;
     accounts?: Prisma.AccountListRelationFilter;
     budgets?: Prisma.BudgetListRelationFilter;
     transactions?: Prisma.TransactionListRelationFilter;
-    verificationCodes?: Prisma.VerificationCodeListRelationFilter;
     financings?: Prisma.FinancingListRelationFilter;
+    verificationCodes?: Prisma.VerificationCodeListRelationFilter;
     deleteRequests?: Prisma.DeleteRequestListRelationFilter;
     pushTokens?: Prisma.PushTokenListRelationFilter;
+    syncLogs?: Prisma.SyncLogListRelationFilter;
+    sessions?: Prisma.SessionListRelationFilter;
 }, "id" | "email" | "codeuniq" | "googleId">;
 export type UserOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -264,16 +321,20 @@ export type UserOrderByWithAggregationInput = {
     email?: Prisma.SortOrder;
     codeuniq?: Prisma.SortOrder;
     password?: Prisma.SortOrderInput | Prisma.SortOrder;
-    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    googleId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    emailVerified?: Prisma.SortOrder;
+    currency?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    syncVersion?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    googleId?: Prisma.SortOrderInput | Prisma.SortOrder;
-    provider?: Prisma.SortOrder;
-    emailVerified?: Prisma.SortOrder;
     _count?: Prisma.UserCountOrderByAggregateInput;
+    _avg?: Prisma.UserAvgOrderByAggregateInput;
     _max?: Prisma.UserMaxOrderByAggregateInput;
     _min?: Prisma.UserMinOrderByAggregateInput;
+    _sum?: Prisma.UserSumOrderByAggregateInput;
 };
 export type UserScalarWhereWithAggregatesInput = {
     AND?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[];
@@ -285,57 +346,67 @@ export type UserScalarWhereWithAggregatesInput = {
     email?: Prisma.StringWithAggregatesFilter<"User"> | string;
     codeuniq?: Prisma.StringWithAggregatesFilter<"User"> | string;
     password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
-    deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
+    provider?: Prisma.EnumAuthProviderWithAggregatesFilter<"User"> | $Enums.AuthProvider;
+    googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
+    emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
+    currency?: Prisma.StringWithAggregatesFilter<"User"> | string;
     isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
+    syncVersion?: Prisma.IntWithAggregatesFilter<"User"> | number;
+    deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
-    googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
-    provider?: Prisma.StringWithAggregatesFilter<"User"> | string;
-    emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
 };
 export type UserCreateInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
     budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput;
-    verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
     budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -344,20 +415,24 @@ export type UserUpdateInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
     budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -366,35 +441,41 @@ export type UserUncheckedUpdateInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
     budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateManyInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
 };
 export type UserUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -403,13 +484,15 @@ export type UserUpdateManyMutationInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type UserUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -418,13 +501,15 @@ export type UserUncheckedUpdateManyInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
 };
 export type UserCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -433,13 +518,18 @@ export type UserCountOrderByAggregateInput = {
     email?: Prisma.SortOrder;
     codeuniq?: Prisma.SortOrder;
     password?: Prisma.SortOrder;
-    deletedAt?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    googleId?: Prisma.SortOrder;
+    emailVerified?: Prisma.SortOrder;
+    currency?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    syncVersion?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    googleId?: Prisma.SortOrder;
-    provider?: Prisma.SortOrder;
-    emailVerified?: Prisma.SortOrder;
+};
+export type UserAvgOrderByAggregateInput = {
+    syncVersion?: Prisma.SortOrder;
 };
 export type UserMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -448,13 +538,15 @@ export type UserMaxOrderByAggregateInput = {
     email?: Prisma.SortOrder;
     codeuniq?: Prisma.SortOrder;
     password?: Prisma.SortOrder;
-    deletedAt?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    googleId?: Prisma.SortOrder;
+    emailVerified?: Prisma.SortOrder;
+    currency?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    syncVersion?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    googleId?: Prisma.SortOrder;
-    provider?: Prisma.SortOrder;
-    emailVerified?: Prisma.SortOrder;
 };
 export type UserMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -463,13 +555,18 @@ export type UserMinOrderByAggregateInput = {
     email?: Prisma.SortOrder;
     codeuniq?: Prisma.SortOrder;
     password?: Prisma.SortOrder;
-    deletedAt?: Prisma.SortOrder;
+    provider?: Prisma.SortOrder;
+    googleId?: Prisma.SortOrder;
+    emailVerified?: Prisma.SortOrder;
+    currency?: Prisma.SortOrder;
     isActive?: Prisma.SortOrder;
+    syncVersion?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
-    googleId?: Prisma.SortOrder;
-    provider?: Prisma.SortOrder;
-    emailVerified?: Prisma.SortOrder;
+};
+export type UserSumOrderByAggregateInput = {
+    syncVersion?: Prisma.SortOrder;
 };
 export type UserScalarRelationFilter = {
     is?: Prisma.UserWhereInput;
@@ -481,14 +578,48 @@ export type StringFieldUpdateOperationsInput = {
 export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null;
 };
-export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null;
+export type EnumAuthProviderFieldUpdateOperationsInput = {
+    set?: $Enums.AuthProvider;
 };
 export type BoolFieldUpdateOperationsInput = {
     set?: boolean;
 };
+export type IntFieldUpdateOperationsInput = {
+    set?: number;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
+};
+export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null;
+};
 export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string;
+};
+export type UserCreateNestedOneWithoutSessionsInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput;
+    upsert?: Prisma.UserUpsertWithoutSessionsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>;
+};
+export type UserCreateNestedOneWithoutAccountsInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput;
+    upsert?: Prisma.UserUpsertWithoutAccountsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>;
 };
 export type UserCreateNestedOneWithoutDeleteRequestsInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutDeleteRequestsInput, Prisma.UserUncheckedCreateWithoutDeleteRequestsInput>;
@@ -513,18 +644,6 @@ export type UserUpdateOneRequiredWithoutVerificationCodesNestedInput = {
     upsert?: Prisma.UserUpsertWithoutVerificationCodesInput;
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerificationCodesInput, Prisma.UserUpdateWithoutVerificationCodesInput>, Prisma.UserUncheckedUpdateWithoutVerificationCodesInput>;
-};
-export type UserCreateNestedOneWithoutAccountsInput = {
-    create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>;
-    connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput;
-    connect?: Prisma.UserWhereUniqueInput;
-};
-export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
-    create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>;
-    connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput;
-    upsert?: Prisma.UserUpsertWithoutAccountsInput;
-    connect?: Prisma.UserWhereUniqueInput;
-    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>;
 };
 export type UserCreateNestedOneWithoutTransactionsInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutTransactionsInput, Prisma.UserUncheckedCreateWithoutTransactionsInput>;
@@ -574,241 +693,180 @@ export type UserUpdateOneRequiredWithoutPushTokensNestedInput = {
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPushTokensInput, Prisma.UserUpdateWithoutPushTokensInput>, Prisma.UserUncheckedUpdateWithoutPushTokensInput>;
 };
-export type UserCreateWithoutDeleteRequestsInput = {
-    id?: string;
+export type UserCreateNestedOneWithoutSyncLogsInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutSyncLogsInput, Prisma.UserUncheckedCreateWithoutSyncLogsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutSyncLogsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutSyncLogsNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutSyncLogsInput, Prisma.UserUncheckedCreateWithoutSyncLogsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutSyncLogsInput;
+    upsert?: Prisma.UserUpsertWithoutSyncLogsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSyncLogsInput, Prisma.UserUpdateWithoutSyncLogsInput>, Prisma.UserUncheckedUpdateWithoutSyncLogsInput>;
+};
+export type UserCreateWithoutSessionsInput = {
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
     budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput;
+    financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
     verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
-    financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
-    pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput;
-};
-export type UserUncheckedCreateWithoutDeleteRequestsInput = {
-    id?: string;
-    name?: string | null;
-    imageUrl?: string | null;
-    email: string;
-    codeuniq: string;
-    password?: string | null;
-    deletedAt?: Date | string | null;
-    isActive?: boolean;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
-    accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
-    budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput;
-    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
-    financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput;
-    pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput;
-};
-export type UserCreateOrConnectWithoutDeleteRequestsInput = {
-    where: Prisma.UserWhereUniqueInput;
-    create: Prisma.XOR<Prisma.UserCreateWithoutDeleteRequestsInput, Prisma.UserUncheckedCreateWithoutDeleteRequestsInput>;
-};
-export type UserUpsertWithoutDeleteRequestsInput = {
-    update: Prisma.XOR<Prisma.UserUpdateWithoutDeleteRequestsInput, Prisma.UserUncheckedUpdateWithoutDeleteRequestsInput>;
-    create: Prisma.XOR<Prisma.UserCreateWithoutDeleteRequestsInput, Prisma.UserUncheckedCreateWithoutDeleteRequestsInput>;
-    where?: Prisma.UserWhereInput;
-};
-export type UserUpdateToOneWithWhereWithoutDeleteRequestsInput = {
-    where?: Prisma.UserWhereInput;
-    data: Prisma.XOR<Prisma.UserUpdateWithoutDeleteRequestsInput, Prisma.UserUncheckedUpdateWithoutDeleteRequestsInput>;
-};
-export type UserUpdateWithoutDeleteRequestsInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    email?: Prisma.StringFieldUpdateOperationsInput | string;
-    codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
-    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
-    budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput;
-    transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
-    financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput;
-    pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput;
-};
-export type UserUncheckedUpdateWithoutDeleteRequestsInput = {
-    id?: Prisma.StringFieldUpdateOperationsInput | string;
-    name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    email?: Prisma.StringFieldUpdateOperationsInput | string;
-    codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
-    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
-    budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput;
-    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
-    financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput;
-    pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput;
-};
-export type UserCreateWithoutVerificationCodesInput = {
-    id?: string;
-    name?: string | null;
-    imageUrl?: string | null;
-    email: string;
-    codeuniq: string;
-    password?: string | null;
-    deletedAt?: Date | string | null;
-    isActive?: boolean;
-    createdAt?: Date | string;
-    updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
-    accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
-    budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput;
-    transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput;
-    financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput;
 };
-export type UserUncheckedCreateWithoutVerificationCodesInput = {
-    id?: string;
+export type UserUncheckedCreateWithoutSessionsInput = {
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
     budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput;
 };
-export type UserCreateOrConnectWithoutVerificationCodesInput = {
+export type UserCreateOrConnectWithoutSessionsInput = {
     where: Prisma.UserWhereUniqueInput;
-    create: Prisma.XOR<Prisma.UserCreateWithoutVerificationCodesInput, Prisma.UserUncheckedCreateWithoutVerificationCodesInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>;
 };
-export type UserUpsertWithoutVerificationCodesInput = {
-    update: Prisma.XOR<Prisma.UserUpdateWithoutVerificationCodesInput, Prisma.UserUncheckedUpdateWithoutVerificationCodesInput>;
-    create: Prisma.XOR<Prisma.UserCreateWithoutVerificationCodesInput, Prisma.UserUncheckedCreateWithoutVerificationCodesInput>;
+export type UserUpsertWithoutSessionsInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>;
     where?: Prisma.UserWhereInput;
 };
-export type UserUpdateToOneWithWhereWithoutVerificationCodesInput = {
+export type UserUpdateToOneWithWhereWithoutSessionsInput = {
     where?: Prisma.UserWhereInput;
-    data: Prisma.XOR<Prisma.UserUpdateWithoutVerificationCodesInput, Prisma.UserUncheckedUpdateWithoutVerificationCodesInput>;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>;
 };
-export type UserUpdateWithoutVerificationCodesInput = {
+export type UserUpdateWithoutSessionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
     budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput;
 };
-export type UserUncheckedUpdateWithoutVerificationCodesInput = {
+export type UserUncheckedUpdateWithoutSessionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
     budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutAccountsInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput;
-    verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutAccountsInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutAccountsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -830,19 +888,23 @@ export type UserUpdateWithoutAccountsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutAccountsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -851,61 +913,299 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
-export type UserCreateWithoutTransactionsInput = {
-    id?: string;
+export type UserCreateWithoutDeleteRequestsInput = {
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
     budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput;
+    financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
     verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
+    pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutDeleteRequestsInput = {
+    id: string;
+    name?: string | null;
+    imageUrl?: string | null;
+    email: string;
+    codeuniq: string;
+    password?: string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
+    isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
+    budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput;
+    financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
+    pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutDeleteRequestsInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutDeleteRequestsInput, Prisma.UserUncheckedCreateWithoutDeleteRequestsInput>;
+};
+export type UserUpsertWithoutDeleteRequestsInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutDeleteRequestsInput, Prisma.UserUncheckedUpdateWithoutDeleteRequestsInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutDeleteRequestsInput, Prisma.UserUncheckedCreateWithoutDeleteRequestsInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutDeleteRequestsInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutDeleteRequestsInput, Prisma.UserUncheckedUpdateWithoutDeleteRequestsInput>;
+};
+export type UserUpdateWithoutDeleteRequestsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
+    budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput;
+    financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
+    pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutDeleteRequestsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
+    budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput;
+    financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
+    pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
+};
+export type UserCreateWithoutVerificationCodesInput = {
+    id: string;
+    name?: string | null;
+    imageUrl?: string | null;
+    email: string;
+    codeuniq: string;
+    password?: string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
+    isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
+    budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
-export type UserUncheckedCreateWithoutTransactionsInput = {
-    id?: string;
+export type UserUncheckedCreateWithoutVerificationCodesInput = {
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
     budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutVerificationCodesInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutVerificationCodesInput, Prisma.UserUncheckedCreateWithoutVerificationCodesInput>;
+};
+export type UserUpsertWithoutVerificationCodesInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutVerificationCodesInput, Prisma.UserUncheckedUpdateWithoutVerificationCodesInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutVerificationCodesInput, Prisma.UserUncheckedCreateWithoutVerificationCodesInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutVerificationCodesInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutVerificationCodesInput, Prisma.UserUncheckedUpdateWithoutVerificationCodesInput>;
+};
+export type UserUpdateWithoutVerificationCodesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
+    budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput;
+    financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput;
+    deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput;
+    pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutVerificationCodesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
+    budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput;
+    financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput;
+    deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput;
+    pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
+};
+export type UserCreateWithoutTransactionsInput = {
+    id: string;
+    name?: string | null;
+    imageUrl?: string | null;
+    email: string;
+    codeuniq: string;
+    password?: string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
+    isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
+    budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput;
+    financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
+    deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput;
+    pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutTransactionsInput = {
+    id: string;
+    name?: string | null;
+    imageUrl?: string | null;
+    email: string;
+    codeuniq: string;
+    password?: string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
+    isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
+    budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput;
+    financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
+    deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput;
+    pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutTransactionsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -927,19 +1227,23 @@ export type UserUpdateWithoutTransactionsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
     budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutTransactionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -948,61 +1252,73 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
     budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutBudgetsInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput;
-    verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutBudgetsInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutBudgetsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1024,19 +1340,23 @@ export type UserUpdateWithoutBudgetsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutBudgetsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1045,61 +1365,73 @@ export type UserUncheckedUpdateWithoutBudgetsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutFinancingsInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
     budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput;
     verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutFinancingsInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
     budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput;
     verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput;
     pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutFinancingsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1121,19 +1453,23 @@ export type UserUpdateWithoutFinancingsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
     budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput;
     verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutFinancingsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1142,61 +1478,73 @@ export type UserUncheckedUpdateWithoutFinancingsInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
     budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput;
     verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput;
     pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutPushTokensInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
     budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput;
-    verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutPushTokensInput = {
-    id?: string;
+    id: string;
     name?: string | null;
     imageUrl?: string | null;
     email: string;
     codeuniq: string;
     password?: string | null;
-    deletedAt?: Date | string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
     isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    googleId?: string | null;
-    provider?: string;
-    emailVerified?: boolean;
     accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
     budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput;
     transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
     financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput;
+    syncLogs?: Prisma.SyncLogUncheckedCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutPushTokensInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -1218,19 +1566,23 @@ export type UserUpdateWithoutPushTokensInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
     budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutPushTokensInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1239,19 +1591,136 @@ export type UserUncheckedUpdateWithoutPushTokensInput = {
     email?: Prisma.StringFieldUpdateOperationsInput | string;
     codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
     password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
     isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    provider?: Prisma.StringFieldUpdateOperationsInput | string;
-    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
     budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput;
     transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput;
-    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
     deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput;
+    syncLogs?: Prisma.SyncLogUncheckedUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
+};
+export type UserCreateWithoutSyncLogsInput = {
+    id: string;
+    name?: string | null;
+    imageUrl?: string | null;
+    email: string;
+    codeuniq: string;
+    password?: string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
+    isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
+    budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput;
+    transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput;
+    financings?: Prisma.FinancingCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeCreateNestedManyWithoutUserInput;
+    deleteRequests?: Prisma.DeleteRequestCreateNestedManyWithoutUserInput;
+    pushTokens?: Prisma.PushTokenCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutSyncLogsInput = {
+    id: string;
+    name?: string | null;
+    imageUrl?: string | null;
+    email: string;
+    codeuniq: string;
+    password?: string | null;
+    provider?: $Enums.AuthProvider;
+    googleId?: string | null;
+    emailVerified?: boolean;
+    currency?: string;
+    isActive?: boolean;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
+    budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput;
+    transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput;
+    financings?: Prisma.FinancingUncheckedCreateNestedManyWithoutUserInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedCreateNestedManyWithoutUserInput;
+    deleteRequests?: Prisma.DeleteRequestUncheckedCreateNestedManyWithoutUserInput;
+    pushTokens?: Prisma.PushTokenUncheckedCreateNestedManyWithoutUserInput;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutSyncLogsInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutSyncLogsInput, Prisma.UserUncheckedCreateWithoutSyncLogsInput>;
+};
+export type UserUpsertWithoutSyncLogsInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutSyncLogsInput, Prisma.UserUncheckedUpdateWithoutSyncLogsInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutSyncLogsInput, Prisma.UserUncheckedCreateWithoutSyncLogsInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutSyncLogsInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutSyncLogsInput, Prisma.UserUncheckedUpdateWithoutSyncLogsInput>;
+};
+export type UserUpdateWithoutSyncLogsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
+    budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput;
+    transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput;
+    financings?: Prisma.FinancingUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUpdateManyWithoutUserNestedInput;
+    deleteRequests?: Prisma.DeleteRequestUpdateManyWithoutUserNestedInput;
+    pushTokens?: Prisma.PushTokenUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutSyncLogsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    codeuniq?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider;
+    googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    currency?: Prisma.StringFieldUpdateOperationsInput | string;
+    isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
+    budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput;
+    transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput;
+    financings?: Prisma.FinancingUncheckedUpdateManyWithoutUserNestedInput;
+    verificationCodes?: Prisma.VerificationCodeUncheckedUpdateManyWithoutUserNestedInput;
+    deleteRequests?: Prisma.DeleteRequestUncheckedUpdateManyWithoutUserNestedInput;
+    pushTokens?: Prisma.PushTokenUncheckedUpdateManyWithoutUserNestedInput;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
 };
 /**
  * Count Type UserCountOutputType
@@ -1260,19 +1729,23 @@ export type UserCountOutputType = {
     accounts: number;
     budgets: number;
     transactions: number;
-    verificationCodes: number;
     financings: number;
+    verificationCodes: number;
     deleteRequests: number;
     pushTokens: number;
+    syncLogs: number;
+    sessions: number;
 };
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs;
     budgets?: boolean | UserCountOutputTypeCountBudgetsArgs;
     transactions?: boolean | UserCountOutputTypeCountTransactionsArgs;
-    verificationCodes?: boolean | UserCountOutputTypeCountVerificationCodesArgs;
     financings?: boolean | UserCountOutputTypeCountFinancingsArgs;
+    verificationCodes?: boolean | UserCountOutputTypeCountVerificationCodesArgs;
     deleteRequests?: boolean | UserCountOutputTypeCountDeleteRequestsArgs;
     pushTokens?: boolean | UserCountOutputTypeCountPushTokensArgs;
+    syncLogs?: boolean | UserCountOutputTypeCountSyncLogsArgs;
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs;
 };
 /**
  * UserCountOutputType without action
@@ -1304,14 +1777,14 @@ export type UserCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Typ
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountVerificationCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.VerificationCodeWhereInput;
+export type UserCountOutputTypeCountFinancingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.FinancingWhereInput;
 };
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountFinancingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: Prisma.FinancingWhereInput;
+export type UserCountOutputTypeCountVerificationCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.VerificationCodeWhereInput;
 };
 /**
  * UserCountOutputType without action
@@ -1325,6 +1798,18 @@ export type UserCountOutputTypeCountDeleteRequestsArgs<ExtArgs extends runtime.T
 export type UserCountOutputTypeCountPushTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.PushTokenWhereInput;
 };
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSyncLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.SyncLogWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.SessionWhereInput;
+};
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     name?: boolean;
@@ -1332,20 +1817,24 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     email?: boolean;
     codeuniq?: boolean;
     password?: boolean;
-    deletedAt?: boolean;
+    provider?: boolean;
+    googleId?: boolean;
+    emailVerified?: boolean;
+    currency?: boolean;
     isActive?: boolean;
+    syncVersion?: boolean;
+    deletedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    googleId?: boolean;
-    provider?: boolean;
-    emailVerified?: boolean;
     accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>;
     budgets?: boolean | Prisma.User$budgetsArgs<ExtArgs>;
     transactions?: boolean | Prisma.User$transactionsArgs<ExtArgs>;
-    verificationCodes?: boolean | Prisma.User$verificationCodesArgs<ExtArgs>;
     financings?: boolean | Prisma.User$financingsArgs<ExtArgs>;
+    verificationCodes?: boolean | Prisma.User$verificationCodesArgs<ExtArgs>;
     deleteRequests?: boolean | Prisma.User$deleteRequestsArgs<ExtArgs>;
     pushTokens?: boolean | Prisma.User$pushTokensArgs<ExtArgs>;
+    syncLogs?: boolean | Prisma.User$syncLogsArgs<ExtArgs>;
+    sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1355,13 +1844,15 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     email?: boolean;
     codeuniq?: boolean;
     password?: boolean;
-    deletedAt?: boolean;
+    provider?: boolean;
+    googleId?: boolean;
+    emailVerified?: boolean;
+    currency?: boolean;
     isActive?: boolean;
+    syncVersion?: boolean;
+    deletedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    googleId?: boolean;
-    provider?: boolean;
-    emailVerified?: boolean;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -1370,13 +1861,15 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     email?: boolean;
     codeuniq?: boolean;
     password?: boolean;
-    deletedAt?: boolean;
+    provider?: boolean;
+    googleId?: boolean;
+    emailVerified?: boolean;
+    currency?: boolean;
     isActive?: boolean;
+    syncVersion?: boolean;
+    deletedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    googleId?: boolean;
-    provider?: boolean;
-    emailVerified?: boolean;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectScalar = {
     id?: boolean;
@@ -1385,23 +1878,27 @@ export type UserSelectScalar = {
     email?: boolean;
     codeuniq?: boolean;
     password?: boolean;
-    deletedAt?: boolean;
+    provider?: boolean;
+    googleId?: boolean;
+    emailVerified?: boolean;
+    currency?: boolean;
     isActive?: boolean;
+    syncVersion?: boolean;
+    deletedAt?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    googleId?: boolean;
-    provider?: boolean;
-    emailVerified?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "imageUrl" | "email" | "codeuniq" | "password" | "deletedAt" | "isActive" | "createdAt" | "updatedAt" | "googleId" | "provider" | "emailVerified", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "imageUrl" | "email" | "codeuniq" | "password" | "provider" | "googleId" | "emailVerified" | "currency" | "isActive" | "syncVersion" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>;
     budgets?: boolean | Prisma.User$budgetsArgs<ExtArgs>;
     transactions?: boolean | Prisma.User$transactionsArgs<ExtArgs>;
-    verificationCodes?: boolean | Prisma.User$verificationCodesArgs<ExtArgs>;
     financings?: boolean | Prisma.User$financingsArgs<ExtArgs>;
+    verificationCodes?: boolean | Prisma.User$verificationCodesArgs<ExtArgs>;
     deleteRequests?: boolean | Prisma.User$deleteRequestsArgs<ExtArgs>;
     pushTokens?: boolean | Prisma.User$pushTokensArgs<ExtArgs>;
+    syncLogs?: boolean | Prisma.User$syncLogsArgs<ExtArgs>;
+    sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -1412,10 +1909,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         accounts: Prisma.$AccountPayload<ExtArgs>[];
         budgets: Prisma.$BudgetPayload<ExtArgs>[];
         transactions: Prisma.$TransactionPayload<ExtArgs>[];
-        verificationCodes: Prisma.$VerificationCodePayload<ExtArgs>[];
         financings: Prisma.$FinancingPayload<ExtArgs>[];
+        verificationCodes: Prisma.$VerificationCodePayload<ExtArgs>[];
         deleteRequests: Prisma.$DeleteRequestPayload<ExtArgs>[];
         pushTokens: Prisma.$PushTokenPayload<ExtArgs>[];
+        syncLogs: Prisma.$SyncLogPayload<ExtArgs>[];
+        sessions: Prisma.$SessionPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1424,13 +1923,15 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         email: string;
         codeuniq: string;
         password: string | null;
-        deletedAt: Date | null;
+        provider: $Enums.AuthProvider;
+        googleId: string | null;
+        emailVerified: boolean;
+        currency: string;
         isActive: boolean;
+        syncVersion: number;
+        deletedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
-        googleId: string | null;
-        provider: string;
-        emailVerified: boolean;
     }, ExtArgs["result"]["user"]>;
     composites: {};
 };
@@ -1763,10 +2264,12 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
     accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     budgets<T extends Prisma.User$budgetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$budgetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BudgetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     transactions<T extends Prisma.User$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
-    verificationCodes<T extends Prisma.User$verificationCodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationCodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     financings<T extends Prisma.User$financingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$financingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FinancingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    verificationCodes<T extends Prisma.User$verificationCodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationCodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     deleteRequests<T extends Prisma.User$deleteRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deleteRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeleteRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     pushTokens<T extends Prisma.User$pushTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pushTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    syncLogs<T extends Prisma.User$syncLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$syncLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SyncLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1798,13 +2301,15 @@ export interface UserFieldRefs {
     readonly email: Prisma.FieldRef<"User", 'String'>;
     readonly codeuniq: Prisma.FieldRef<"User", 'String'>;
     readonly password: Prisma.FieldRef<"User", 'String'>;
-    readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>;
+    readonly provider: Prisma.FieldRef<"User", 'AuthProvider'>;
+    readonly googleId: Prisma.FieldRef<"User", 'String'>;
+    readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>;
+    readonly currency: Prisma.FieldRef<"User", 'String'>;
     readonly isActive: Prisma.FieldRef<"User", 'Boolean'>;
+    readonly syncVersion: Prisma.FieldRef<"User", 'Int'>;
+    readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>;
-    readonly googleId: Prisma.FieldRef<"User", 'String'>;
-    readonly provider: Prisma.FieldRef<"User", 'String'>;
-    readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>;
 }
 /**
  * User findUnique
@@ -2245,29 +2750,6 @@ export type User$transactionsArgs<ExtArgs extends runtime.Types.Extensions.Inter
     distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[];
 };
 /**
- * User.verificationCodes
- */
-export type User$verificationCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the VerificationCode
-     */
-    select?: Prisma.VerificationCodeSelect<ExtArgs> | null;
-    /**
-     * Omit specific fields from the VerificationCode
-     */
-    omit?: Prisma.VerificationCodeOmit<ExtArgs> | null;
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: Prisma.VerificationCodeInclude<ExtArgs> | null;
-    where?: Prisma.VerificationCodeWhereInput;
-    orderBy?: Prisma.VerificationCodeOrderByWithRelationInput | Prisma.VerificationCodeOrderByWithRelationInput[];
-    cursor?: Prisma.VerificationCodeWhereUniqueInput;
-    take?: number;
-    skip?: number;
-    distinct?: Prisma.VerificationCodeScalarFieldEnum | Prisma.VerificationCodeScalarFieldEnum[];
-};
-/**
  * User.financings
  */
 export type User$financingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2289,6 +2771,29 @@ export type User$financingsArgs<ExtArgs extends runtime.Types.Extensions.Interna
     take?: number;
     skip?: number;
     distinct?: Prisma.FinancingScalarFieldEnum | Prisma.FinancingScalarFieldEnum[];
+};
+/**
+ * User.verificationCodes
+ */
+export type User$verificationCodesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VerificationCode
+     */
+    select?: Prisma.VerificationCodeSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the VerificationCode
+     */
+    omit?: Prisma.VerificationCodeOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.VerificationCodeInclude<ExtArgs> | null;
+    where?: Prisma.VerificationCodeWhereInput;
+    orderBy?: Prisma.VerificationCodeOrderByWithRelationInput | Prisma.VerificationCodeOrderByWithRelationInput[];
+    cursor?: Prisma.VerificationCodeWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.VerificationCodeScalarFieldEnum | Prisma.VerificationCodeScalarFieldEnum[];
 };
 /**
  * User.deleteRequests
@@ -2335,6 +2840,52 @@ export type User$pushTokensArgs<ExtArgs extends runtime.Types.Extensions.Interna
     take?: number;
     skip?: number;
     distinct?: Prisma.PushTokenScalarFieldEnum | Prisma.PushTokenScalarFieldEnum[];
+};
+/**
+ * User.syncLogs
+ */
+export type User$syncLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SyncLog
+     */
+    select?: Prisma.SyncLogSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the SyncLog
+     */
+    omit?: Prisma.SyncLogOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SyncLogInclude<ExtArgs> | null;
+    where?: Prisma.SyncLogWhereInput;
+    orderBy?: Prisma.SyncLogOrderByWithRelationInput | Prisma.SyncLogOrderByWithRelationInput[];
+    cursor?: Prisma.SyncLogWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.SyncLogScalarFieldEnum | Prisma.SyncLogScalarFieldEnum[];
+};
+/**
+ * User.sessions
+ */
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: Prisma.SessionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: Prisma.SessionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.SessionInclude<ExtArgs> | null;
+    where?: Prisma.SessionWhereInput;
+    orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[];
+    cursor?: Prisma.SessionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[];
 };
 /**
  * User without action

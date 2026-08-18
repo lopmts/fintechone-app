@@ -1,14 +1,15 @@
 import { prisma } from "../lib/prisma";
 import { createTransactionSchema, listTransactionsSchema, updateTransactionSchema, } from "../schemas/transactions";
+import { randomUUID } from "../utils/random_uuid";
 export async function transactionRoutes(app) {
     const auth = { onRequest: [app.authenticate] };
-    // GET /transactions
+    // GET /transactions (supports optional ?updatedSince=ISO)
     app.get("/", auth, async (request, reply) => {
         const { sub: userId } = request.user;
         const result = listTransactionsSchema.safeParse(request.query);
         if (!result.success)
             return reply.status(400).send({ error: result.error.flatten() });
-        const { accountId, categoryId, type, from, to, page, limit } = result.data;
+        const { accountId, categoryId, type, from, to, page, limit, updatedSince } = result.data;
         const where = {
             userId,
             ...(accountId && { accountId }),
@@ -23,6 +24,12 @@ export async function transactionRoutes(app) {
                 }
                 : {}),
         };
+        if (updatedSince) {
+            const sinceDate = new Date(updatedSince);
+            if (!isNaN(sinceDate.getTime())) {
+                where.updatedAt = { gt: sinceDate };
+            }
+        }
         const [transactions, total] = await Promise.all([
             prisma.transaction.findMany({
                 where,
@@ -44,6 +51,7 @@ export async function transactionRoutes(app) {
     // POST /transactions
     app.post("/", auth, async (request, reply) => {
         const { sub: userId } = request.user;
+        console.log(request.body);
         const result = createTransactionSchema.safeParse(request.body);
         if (!result.success)
             return reply.status(400).send({ error: result.error });
@@ -75,13 +83,80 @@ export async function transactionRoutes(app) {
         }
         const transaction = await prisma.transaction.create({
             data: {
+                id: result.data.id ?? randomUUID(),
                 ...rest,
                 amount,
                 type,
                 accountId,
                 categoryId: selectedCategoryId,
                 userId,
-                date: date ? new Date(date) : undefined,
+                date: date ? new Date(date) : new Date(),
+            },
+            include: { category: true },
+        });
+        return reply.status(201).send({ transaction });
+    });
+    // PUT /transactions/:id  (upsert by client-provided id)
+    app.put("/:id", auth, async (request, reply) => {
+        const { sub: userId } = request.user;
+        const { id } = request.params;
+        const result = createTransactionSchema.safeParse(request.body);
+        if (!result.success)
+            return reply.status(400).send({ error: result.error });
+        const { accountId, amount, type, date, categoryId, categoryKey, ...rest } = result.data;
+        const account = await prisma.account.findFirst({
+            where: { id: accountId, userId },
+        });
+        if (!account)
+            return reply.status(404).send({ error: "Conta não encontrada" });
+        let selectedCategoryId;
+        if (categoryId || categoryKey) {
+            const category = await prisma.category.findFirst({
+                where: categoryId ? { id: categoryId } : { key: categoryKey },
+            });
+            if (!category)
+                return reply.status(404).send({ error: "Categoria não encontrada" });
+            selectedCategoryId = category.id;
+        }
+        else {
+            const categories = await prisma.category.findMany({
+                select: { id: true, key: true },
+            });
+            if (categories.length === 0)
+                return reply
+                    .status(404)
+                    .send({ error: "Nenhuma categoria disponível" });
+            selectedCategoryId =
+                categories[Math.floor(Math.random() * categories.length)].id;
+        }
+        const exists = await prisma.transaction.findFirst({
+            where: { id, userId },
+        });
+        if (exists) {
+            const transaction = await prisma.transaction.update({
+                where: { id },
+                data: {
+                    ...rest,
+                    amount,
+                    type,
+                    accountId,
+                    categoryId: selectedCategoryId,
+                    ...(date && { date: new Date(date) }),
+                },
+                include: { category: true },
+            });
+            return reply.send({ transaction });
+        }
+        const transaction = await prisma.transaction.create({
+            data: {
+                id,
+                ...rest,
+                amount,
+                type,
+                accountId,
+                categoryId: selectedCategoryId,
+                userId,
+                date: date ? new Date(date) : new Date(),
             },
             include: { category: true },
         });

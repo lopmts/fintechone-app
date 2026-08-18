@@ -1,59 +1,8 @@
-import z from "zod";
+import { createFinancingSchema, deleteFinancingSchema, getFinancingSchema, listFinancingsSchema, markPaidSchema, updateFinancingSchema, } from "../schemas/financing_schema";
 import { createFinancing, deleteFinancing, getFinancingById, getFinancings, markInstallmentsPaid, updateFinancing, } from "../services/financing.service";
+import { randomUUID } from "../utils/random_uuid";
 // Campos percentuais/taxa são opcionais E aceitam null (o front manda null
 // quando o campo fica vazio, em vez de simplesmente omitir a chave).
-const optionalPercent = z.number().min(0).nullable().optional();
-const createFinancingSchema = {
-    body: z.object({
-        title: z.string().min(1).max(130),
-        amount: z.number().min(0.01),
-        installmentAmount: z.number().min(0.01),
-        interestRate: optionalPercent, // % ao mês — opcional, apenas informativo
-        installments: z.number().int().min(1),
-        startDate: z.string().datetime(),
-        lateFeeRate: optionalPercent, // % multa única sobre a parcela
-        lateInterestRate: optionalPercent, // % mora ao dia sobre a parcela
-    }),
-};
-const listFinancingsSchema = {
-    querystring: z.object({
-        filter: z.enum(["all", "paid", "unpaid", "overdue"]).optional(),
-    }),
-};
-const getFinancingSchema = {
-    params: z.object({
-        id: z.string(),
-    }),
-};
-const updateFinancingSchema = {
-    params: z.object({
-        id: z.string(),
-    }),
-    body: z.object({
-        title: z.string().min(1).max(130).optional(),
-        amount: z.number().min(0.01).optional(),
-        installmentAmount: z.number().min(0.01).optional(),
-        interestRate: optionalPercent,
-        installments: z.number().int().min(1).optional(),
-        startDate: z.string().datetime().optional(),
-        lateFeeRate: optionalPercent,
-        lateInterestRate: optionalPercent,
-    }),
-};
-const markPaidSchema = {
-    params: z.object({
-        id: z.string(),
-    }),
-    body: z.object({
-        installmentNumbers: z.array(z.number().int().min(1)).min(1),
-        paidAt: z.string().datetime().optional(),
-    }),
-};
-const deleteFinancingSchema = {
-    params: z.object({
-        id: z.string(),
-    }),
-};
 export async function financingRoutes(app) {
     const auth = { onRequest: [app.authenticate] };
     /**
@@ -65,6 +14,7 @@ export async function financingRoutes(app) {
         const body = req.body;
         const financing = await createFinancing({
             ...body,
+            id: body.id ?? randomUUID(),
             userId,
             startDate: new Date(body.startDate),
         });

@@ -21,9 +21,24 @@ export const CategoryKey = {
     CARD: 'CARD',
     OTHER: 'OTHER'
 };
+export const BankType = {
+    NUBANK: 'NUBANK',
+    ITAÚ: 'ITAÚ',
+    BRADESCO: 'BRADESCO',
+    SANTANDER: 'SANTANDER',
+    CAIXA: 'CAIXA',
+    BANCO_DO_BRASIL: 'BANCO_DO_BRASIL',
+    INTER: 'INTER',
+    C6_BANK: 'C6_BANK',
+    PAGBANK: 'PAGBANK',
+    NEXT: 'NEXT',
+    ORIGINAL: 'ORIGINAL',
+    OTHER: 'OTHER'
+};
 export const TransactionType = {
     EXPENSE: 'EXPENSE',
-    INCOME: 'INCOME'
+    INCOME: 'INCOME',
+    TRANSFER: 'TRANSFER'
 };
 export const BudgetPeriod = {
     WEEKLY: 'WEEKLY',
@@ -34,5 +49,15 @@ export const AccountType = {
     SAVINGS: 'SAVINGS',
     CREDIT: 'CREDIT',
     MAIN: 'MAIN'
+};
+export const AuthProvider = {
+    LOCAL: 'LOCAL',
+    GOOGLE: 'GOOGLE',
+    APPLE: 'APPLE'
+};
+export const DevicePlatform = {
+    ANDROID: 'ANDROID',
+    IOS: 'IOS',
+    WEB: 'WEB'
 };
 //# sourceMappingURL=enums.js.map

@@ -25,6 +25,16 @@ export { Prisma };
  */
 export type User = Prisma.UserModel;
 /**
+ * Model Session
+ *
+ */
+export type Session = Prisma.SessionModel;
+/**
+ * Model Account
+ *
+ */
+export type Account = Prisma.AccountModel;
+/**
  * Model DeleteRequest
  *
  */
@@ -34,11 +44,6 @@ export type DeleteRequest = Prisma.DeleteRequestModel;
  *
  */
 export type VerificationCode = Prisma.VerificationCodeModel;
-/**
- * Model Account
- *
- */
-export type Account = Prisma.AccountModel;
 /**
  * Model Category
  *
@@ -69,4 +74,9 @@ export type InstallmentsPaid = Prisma.InstallmentsPaidModel;
  *
  */
 export type PushToken = Prisma.PushTokenModel;
+/**
+ * Model SyncLog
+ *
+ */
+export type SyncLog = Prisma.SyncLogModel;
 //# sourceMappingURL=client.d.ts.map

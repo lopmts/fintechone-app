@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:fintechone/services/backup_service.dart';
+import 'package:fintechone/services/backup_service_notification.dart';
 import 'package:fintechone/database/database.dart';
 import 'package:fintechone/network/account_api.dart';
 import 'package:fintechone/network/transaction_api.dart';
+import 'package:fintechone/network/category_api.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -103,6 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     final db = context.read<AppDatabase>();
                     final accApi = context.read<AccountApi>();
                     final txApi = context.read<TransactionApi>();
+                    final catApi = context.read<CategoryApi>();
                     final notifications = FlutterLocalNotificationsPlugin();
 
                     double lastProgress = 0.0;
@@ -192,6 +194,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       transactionsDao: db.transactionsDao,
                       accountApi: accApi,
                       transactionApi: txApi,
+                      categoriesDao: db.categoriesDao,
+                      categoryApi: catApi,
                       notifications: notifications,
                     );
 

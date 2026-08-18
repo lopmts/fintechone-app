@@ -1,5 +1,6 @@
 import { z } from "zod/v4";
 export declare const createBudgetSchema: z.ZodObject<{
+    id: z.ZodOptional<z.ZodString>;
     name: z.ZodString;
     categoryId: z.ZodOptional<z.ZodString>;
     categoryKey: z.ZodOptional<z.ZodEnum<{
@@ -26,6 +27,7 @@ export declare const createBudgetSchema: z.ZodObject<{
     isActive: z.ZodBoolean;
 }, z.core.$strip>;
 export declare const updateBudgetSchema: z.ZodObject<{
+    id: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     name: z.ZodOptional<z.ZodString>;
     categoryId: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     categoryKey: z.ZodOptional<z.ZodOptional<z.ZodEnum<{

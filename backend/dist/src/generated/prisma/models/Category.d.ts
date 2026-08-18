@@ -8,8 +8,16 @@ import type * as Prisma from "../internal/prismaNamespace.js";
 export type CategoryModel = runtime.Types.Result.DefaultSelection<Prisma.$CategoryPayload>;
 export type AggregateCategory = {
     _count: CategoryCountAggregateOutputType | null;
+    _avg: CategoryAvgAggregateOutputType | null;
+    _sum: CategorySumAggregateOutputType | null;
     _min: CategoryMinAggregateOutputType | null;
     _max: CategoryMaxAggregateOutputType | null;
+};
+export type CategoryAvgAggregateOutputType = {
+    syncVersion: number | null;
+};
+export type CategorySumAggregateOutputType = {
+    syncVersion: number | null;
 };
 export type CategoryMinAggregateOutputType = {
     id: string | null;
@@ -17,6 +25,9 @@ export type CategoryMinAggregateOutputType = {
     name: string | null;
     icon: string | null;
     color: string | null;
+    type: $Enums.TransactionType | null;
+    syncVersion: number | null;
+    deletedAt: Date | null;
 };
 export type CategoryMaxAggregateOutputType = {
     id: string | null;
@@ -24,6 +35,9 @@ export type CategoryMaxAggregateOutputType = {
     name: string | null;
     icon: string | null;
     color: string | null;
+    type: $Enums.TransactionType | null;
+    syncVersion: number | null;
+    deletedAt: Date | null;
 };
 export type CategoryCountAggregateOutputType = {
     id: number;
@@ -31,7 +45,16 @@ export type CategoryCountAggregateOutputType = {
     name: number;
     icon: number;
     color: number;
+    type: number;
+    syncVersion: number;
+    deletedAt: number;
     _all: number;
+};
+export type CategoryAvgAggregateInputType = {
+    syncVersion?: true;
+};
+export type CategorySumAggregateInputType = {
+    syncVersion?: true;
 };
 export type CategoryMinAggregateInputType = {
     id?: true;
@@ -39,6 +62,9 @@ export type CategoryMinAggregateInputType = {
     name?: true;
     icon?: true;
     color?: true;
+    type?: true;
+    syncVersion?: true;
+    deletedAt?: true;
 };
 export type CategoryMaxAggregateInputType = {
     id?: true;
@@ -46,6 +72,9 @@ export type CategoryMaxAggregateInputType = {
     name?: true;
     icon?: true;
     color?: true;
+    type?: true;
+    syncVersion?: true;
+    deletedAt?: true;
 };
 export type CategoryCountAggregateInputType = {
     id?: true;
@@ -53,6 +82,9 @@ export type CategoryCountAggregateInputType = {
     name?: true;
     icon?: true;
     color?: true;
+    type?: true;
+    syncVersion?: true;
+    deletedAt?: true;
     _all?: true;
 };
 export type CategoryAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -93,6 +125,18 @@ export type CategoryAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      *
+     * Select which fields to average
+    **/
+    _avg?: CategoryAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: CategorySumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
      * Select which fields to find the minimum value
     **/
     _min?: CategoryMinAggregateInputType;
@@ -114,6 +158,8 @@ export type CategoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
     take?: number;
     skip?: number;
     _count?: CategoryCountAggregateInputType | true;
+    _avg?: CategoryAvgAggregateInputType;
+    _sum?: CategorySumAggregateInputType;
     _min?: CategoryMinAggregateInputType;
     _max?: CategoryMaxAggregateInputType;
 };
@@ -123,7 +169,12 @@ export type CategoryGroupByOutputType = {
     name: string;
     icon: string;
     color: string;
+    type: $Enums.TransactionType;
+    syncVersion: number;
+    deletedAt: Date | null;
     _count: CategoryCountAggregateOutputType | null;
+    _avg: CategoryAvgAggregateOutputType | null;
+    _sum: CategorySumAggregateOutputType | null;
     _min: CategoryMinAggregateOutputType | null;
     _max: CategoryMaxAggregateOutputType | null;
 };
@@ -139,6 +190,9 @@ export type CategoryWhereInput = {
     name?: Prisma.StringFilter<"Category"> | string;
     icon?: Prisma.StringFilter<"Category"> | string;
     color?: Prisma.StringFilter<"Category"> | string;
+    type?: Prisma.EnumTransactionTypeFilter<"Category"> | $Enums.TransactionType;
+    syncVersion?: Prisma.IntFilter<"Category"> | number;
+    deletedAt?: Prisma.DateTimeNullableFilter<"Category"> | Date | string | null;
     transactions?: Prisma.TransactionListRelationFilter;
     budgets?: Prisma.BudgetListRelationFilter;
 };
@@ -148,6 +202,9 @@ export type CategoryOrderByWithRelationInput = {
     name?: Prisma.SortOrder;
     icon?: Prisma.SortOrder;
     color?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    syncVersion?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     transactions?: Prisma.TransactionOrderByRelationAggregateInput;
     budgets?: Prisma.BudgetOrderByRelationAggregateInput;
 };
@@ -160,6 +217,9 @@ export type CategoryWhereUniqueInput = Prisma.AtLeast<{
     name?: Prisma.StringFilter<"Category"> | string;
     icon?: Prisma.StringFilter<"Category"> | string;
     color?: Prisma.StringFilter<"Category"> | string;
+    type?: Prisma.EnumTransactionTypeFilter<"Category"> | $Enums.TransactionType;
+    syncVersion?: Prisma.IntFilter<"Category"> | number;
+    deletedAt?: Prisma.DateTimeNullableFilter<"Category"> | Date | string | null;
     transactions?: Prisma.TransactionListRelationFilter;
     budgets?: Prisma.BudgetListRelationFilter;
 }, "id" | "key">;
@@ -169,9 +229,14 @@ export type CategoryOrderByWithAggregationInput = {
     name?: Prisma.SortOrder;
     icon?: Prisma.SortOrder;
     color?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    syncVersion?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.CategoryCountOrderByAggregateInput;
+    _avg?: Prisma.CategoryAvgOrderByAggregateInput;
     _max?: Prisma.CategoryMaxOrderByAggregateInput;
     _min?: Prisma.CategoryMinOrderByAggregateInput;
+    _sum?: Prisma.CategorySumOrderByAggregateInput;
 };
 export type CategoryScalarWhereWithAggregatesInput = {
     AND?: Prisma.CategoryScalarWhereWithAggregatesInput | Prisma.CategoryScalarWhereWithAggregatesInput[];
@@ -182,22 +247,31 @@ export type CategoryScalarWhereWithAggregatesInput = {
     name?: Prisma.StringWithAggregatesFilter<"Category"> | string;
     icon?: Prisma.StringWithAggregatesFilter<"Category"> | string;
     color?: Prisma.StringWithAggregatesFilter<"Category"> | string;
+    type?: Prisma.EnumTransactionTypeWithAggregatesFilter<"Category"> | $Enums.TransactionType;
+    syncVersion?: Prisma.IntWithAggregatesFilter<"Category"> | number;
+    deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Category"> | Date | string | null;
 };
 export type CategoryCreateInput = {
-    id?: string;
+    id: string;
     key: $Enums.CategoryKey;
     name: string;
     icon: string;
     color: string;
+    type: $Enums.TransactionType;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput;
     budgets?: Prisma.BudgetCreateNestedManyWithoutCategoryInput;
 };
 export type CategoryUncheckedCreateInput = {
-    id?: string;
+    id: string;
     key: $Enums.CategoryKey;
     name: string;
     icon: string;
     color: string;
+    type: $Enums.TransactionType;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput;
     budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutCategoryInput;
 };
@@ -207,6 +281,9 @@ export type CategoryUpdateInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     icon?: Prisma.StringFieldUpdateOperationsInput | string;
     color?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput;
     budgets?: Prisma.BudgetUpdateManyWithoutCategoryNestedInput;
 };
@@ -216,15 +293,21 @@ export type CategoryUncheckedUpdateInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     icon?: Prisma.StringFieldUpdateOperationsInput | string;
     color?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput;
     budgets?: Prisma.BudgetUncheckedUpdateManyWithoutCategoryNestedInput;
 };
 export type CategoryCreateManyInput = {
-    id?: string;
+    id: string;
     key: $Enums.CategoryKey;
     name: string;
     icon: string;
     color: string;
+    type: $Enums.TransactionType;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
 };
 export type CategoryUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -232,6 +315,9 @@ export type CategoryUpdateManyMutationInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     icon?: Prisma.StringFieldUpdateOperationsInput | string;
     color?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type CategoryUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -239,6 +325,9 @@ export type CategoryUncheckedUpdateManyInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     icon?: Prisma.StringFieldUpdateOperationsInput | string;
     color?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
 };
 export type CategoryCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -246,6 +335,12 @@ export type CategoryCountOrderByAggregateInput = {
     name?: Prisma.SortOrder;
     icon?: Prisma.SortOrder;
     color?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    syncVersion?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type CategoryAvgOrderByAggregateInput = {
+    syncVersion?: Prisma.SortOrder;
 };
 export type CategoryMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -253,6 +348,9 @@ export type CategoryMaxOrderByAggregateInput = {
     name?: Prisma.SortOrder;
     icon?: Prisma.SortOrder;
     color?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    syncVersion?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
 };
 export type CategoryMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -260,6 +358,12 @@ export type CategoryMinOrderByAggregateInput = {
     name?: Prisma.SortOrder;
     icon?: Prisma.SortOrder;
     color?: Prisma.SortOrder;
+    type?: Prisma.SortOrder;
+    syncVersion?: Prisma.SortOrder;
+    deletedAt?: Prisma.SortOrder;
+};
+export type CategorySumOrderByAggregateInput = {
+    syncVersion?: Prisma.SortOrder;
 };
 export type CategoryNullableScalarRelationFilter = {
     is?: Prisma.CategoryWhereInput | null;
@@ -267,6 +371,9 @@ export type CategoryNullableScalarRelationFilter = {
 };
 export type EnumCategoryKeyFieldUpdateOperationsInput = {
     set?: $Enums.CategoryKey;
+};
+export type EnumTransactionTypeFieldUpdateOperationsInput = {
+    set?: $Enums.TransactionType;
 };
 export type CategoryCreateNestedOneWithoutTransactionsInput = {
     create?: Prisma.XOR<Prisma.CategoryCreateWithoutTransactionsInput, Prisma.CategoryUncheckedCreateWithoutTransactionsInput>;
@@ -297,19 +404,25 @@ export type CategoryUpdateOneWithoutBudgetsNestedInput = {
     update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutBudgetsInput, Prisma.CategoryUpdateWithoutBudgetsInput>, Prisma.CategoryUncheckedUpdateWithoutBudgetsInput>;
 };
 export type CategoryCreateWithoutTransactionsInput = {
-    id?: string;
+    id: string;
     key: $Enums.CategoryKey;
     name: string;
     icon: string;
     color: string;
+    type: $Enums.TransactionType;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     budgets?: Prisma.BudgetCreateNestedManyWithoutCategoryInput;
 };
 export type CategoryUncheckedCreateWithoutTransactionsInput = {
-    id?: string;
+    id: string;
     key: $Enums.CategoryKey;
     name: string;
     icon: string;
     color: string;
+    type: $Enums.TransactionType;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutCategoryInput;
 };
 export type CategoryCreateOrConnectWithoutTransactionsInput = {
@@ -331,6 +444,9 @@ export type CategoryUpdateWithoutTransactionsInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     icon?: Prisma.StringFieldUpdateOperationsInput | string;
     color?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     budgets?: Prisma.BudgetUpdateManyWithoutCategoryNestedInput;
 };
 export type CategoryUncheckedUpdateWithoutTransactionsInput = {
@@ -339,22 +455,31 @@ export type CategoryUncheckedUpdateWithoutTransactionsInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     icon?: Prisma.StringFieldUpdateOperationsInput | string;
     color?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     budgets?: Prisma.BudgetUncheckedUpdateManyWithoutCategoryNestedInput;
 };
 export type CategoryCreateWithoutBudgetsInput = {
-    id?: string;
+    id: string;
     key: $Enums.CategoryKey;
     name: string;
     icon: string;
     color: string;
+    type: $Enums.TransactionType;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     transactions?: Prisma.TransactionCreateNestedManyWithoutCategoryInput;
 };
 export type CategoryUncheckedCreateWithoutBudgetsInput = {
-    id?: string;
+    id: string;
     key: $Enums.CategoryKey;
     name: string;
     icon: string;
     color: string;
+    type: $Enums.TransactionType;
+    syncVersion?: number;
+    deletedAt?: Date | string | null;
     transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutCategoryInput;
 };
 export type CategoryCreateOrConnectWithoutBudgetsInput = {
@@ -376,6 +501,9 @@ export type CategoryUpdateWithoutBudgetsInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     icon?: Prisma.StringFieldUpdateOperationsInput | string;
     color?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     transactions?: Prisma.TransactionUpdateManyWithoutCategoryNestedInput;
 };
 export type CategoryUncheckedUpdateWithoutBudgetsInput = {
@@ -384,6 +512,9 @@ export type CategoryUncheckedUpdateWithoutBudgetsInput = {
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     icon?: Prisma.StringFieldUpdateOperationsInput | string;
     color?: Prisma.StringFieldUpdateOperationsInput | string;
+    type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
+    syncVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+    deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     transactions?: Prisma.TransactionUncheckedUpdateManyWithoutCategoryNestedInput;
 };
 /**
@@ -424,6 +555,9 @@ export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
     name?: boolean;
     icon?: boolean;
     color?: boolean;
+    type?: boolean;
+    syncVersion?: boolean;
+    deletedAt?: boolean;
     transactions?: boolean | Prisma.Category$transactionsArgs<ExtArgs>;
     budgets?: boolean | Prisma.Category$budgetsArgs<ExtArgs>;
     _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>;
@@ -434,6 +568,9 @@ export type CategorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
     name?: boolean;
     icon?: boolean;
     color?: boolean;
+    type?: boolean;
+    syncVersion?: boolean;
+    deletedAt?: boolean;
 }, ExtArgs["result"]["category"]>;
 export type CategorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -441,6 +578,9 @@ export type CategorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
     name?: boolean;
     icon?: boolean;
     color?: boolean;
+    type?: boolean;
+    syncVersion?: boolean;
+    deletedAt?: boolean;
 }, ExtArgs["result"]["category"]>;
 export type CategorySelectScalar = {
     id?: boolean;
@@ -448,8 +588,11 @@ export type CategorySelectScalar = {
     name?: boolean;
     icon?: boolean;
     color?: boolean;
+    type?: boolean;
+    syncVersion?: boolean;
+    deletedAt?: boolean;
 };
-export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "name" | "icon" | "color", ExtArgs["result"]["category"]>;
+export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "name" | "icon" | "color" | "type" | "syncVersion" | "deletedAt", ExtArgs["result"]["category"]>;
 export type CategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     transactions?: boolean | Prisma.Category$transactionsArgs<ExtArgs>;
     budgets?: boolean | Prisma.Category$budgetsArgs<ExtArgs>;
@@ -469,6 +612,9 @@ export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
         name: string;
         icon: string;
         color: string;
+        type: $Enums.TransactionType;
+        syncVersion: number;
+        deletedAt: Date | null;
     }, ExtArgs["result"]["category"]>;
     composites: {};
 };
@@ -830,6 +976,9 @@ export interface CategoryFieldRefs {
     readonly name: Prisma.FieldRef<"Category", 'String'>;
     readonly icon: Prisma.FieldRef<"Category", 'String'>;
     readonly color: Prisma.FieldRef<"Category", 'String'>;
+    readonly type: Prisma.FieldRef<"Category", 'TransactionType'>;
+    readonly syncVersion: Prisma.FieldRef<"Category", 'Int'>;
+    readonly deletedAt: Prisma.FieldRef<"Category", 'DateTime'>;
 }
 /**
  * Category findUnique

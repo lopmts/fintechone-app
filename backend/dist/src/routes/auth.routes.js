@@ -1,12 +1,17 @@
 import bcrypt from "bcryptjs";
+import crypto, { randomInt } from "node:crypto";
 import z from "zod";
 import { prisma } from "../lib/prisma";
-import { loginSchema, registerSchema, verifyCodeSchema, } from "../schemas/auth";
+import { loginSchema, registerSchema, verifyCodeSchema } from "../schemas/auth";
 import { sendVerificationEmail } from "../services/email.service";
 import { verifyGoogleToken } from "../services/googleAuth.service";
+import { randomUUID } from "../utils/random_uuid";
 // Gera código numérico de 6 dígitos
 function generateCode() {
-    return String(Math.floor(100000 + Math.random() * 900000));
+    return randomInt(100000, 1000000).toString();
+}
+function hashCode(code) {
+    return crypto.createHash("sha256").update(code).digest("hex");
 }
 export async function authRoutes(app) {
     app.post("/google", async (request, reply) => {
@@ -30,10 +35,11 @@ export async function authRoutes(app) {
             const codeuniq = `USR-${Date.now()}`;
             user = await prisma.user.create({
                 data: {
+                    id: randomUUID(),
                     email: googleData.email,
                     name: googleData.name,
                     googleId: googleData.googleId,
-                    provider: "google",
+                    provider: "GOOGLE",
                     emailVerified: true,
                     imageUrl: googleData.picture,
                     codeuniq,
@@ -54,6 +60,7 @@ export async function authRoutes(app) {
                 id: user.id,
                 name: user.name,
                 email: user.email,
+                imageUrl: user.imageUrl,
                 codeuniq: user.codeuniq,
             },
             token,
@@ -75,7 +82,6 @@ export async function authRoutes(app) {
         if (!result.success) {
             return reply.status(400).send({ error: result.error.flatten() });
         }
-        console.log("Register request:", result.data);
         const { name, email, password } = result.data;
         const exists = await prisma.user.findUnique({ where: { email } });
         if (exists) {
@@ -84,7 +90,13 @@ export async function authRoutes(app) {
         const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
         const codeuniq = `USR-${Date.now()}`;
         const user = await prisma.user.create({
-            data: { name, email, password: hashedPassword, codeuniq },
+            data: {
+                id: randomUUID(),
+                name,
+                email,
+                password: hashedPassword,
+                codeuniq,
+            },
             select: {
                 id: true,
                 name: true,
@@ -172,7 +184,7 @@ export async function authRoutes(app) {
         const verification = await prisma.verificationCode.findFirst({
             where: {
                 userId: user.id,
-                code,
+                code: hashCode(code),
                 usedAt: null,
                 expiresAt: { gt: new Date() },
             },
@@ -267,7 +279,7 @@ export async function authRoutes(app) {
         const verification = await prisma.verificationCode.findFirst({
             where: {
                 userId: user.id,
-                code,
+                code: hashCode(code),
                 usedAt: null,
                 expiresAt: { gt: new Date() },
             },
@@ -306,7 +318,11 @@ async function issueAndSendCode(userId, email, name) {
     const code = generateCode();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutos
     await prisma.verificationCode.create({
-        data: { userId, code, expiresAt },
+        data: {
+            userId,
+            code: hashCode(code),
+            expiresAt,
+        },
     });
     await sendVerificationEmail({ to: email, code, userName: name });
 }

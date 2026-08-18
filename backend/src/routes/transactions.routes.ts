@@ -67,8 +67,6 @@ export async function transactionRoutes(app: FastifyInstance) {
   app.post("/", auth, async (request, reply) => {
     const { sub: userId } = request.user as { sub: string };
 
-    console.log(request.body);
-
     const result = createTransactionSchema.safeParse(request.body);
     if (!result.success) return reply.status(400).send({ error: result.error });
 

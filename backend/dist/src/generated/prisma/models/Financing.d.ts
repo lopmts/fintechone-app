@@ -549,13 +549,6 @@ export type FinancingUncheckedUpdateManyWithoutUserNestedInput = {
     updateMany?: Prisma.FinancingUpdateManyWithWhereWithoutUserInput | Prisma.FinancingUpdateManyWithWhereWithoutUserInput[];
     deleteMany?: Prisma.FinancingScalarWhereInput | Prisma.FinancingScalarWhereInput[];
 };
-export type IntFieldUpdateOperationsInput = {
-    set?: number;
-    increment?: number;
-    decrement?: number;
-    multiply?: number;
-    divide?: number;
-};
 export type FinancingCreateNestedOneWithoutInstallmentsPaidInput = {
     create?: Prisma.XOR<Prisma.FinancingCreateWithoutInstallmentsPaidInput, Prisma.FinancingUncheckedCreateWithoutInstallmentsPaidInput>;
     connectOrCreate?: Prisma.FinancingCreateOrConnectWithoutInstallmentsPaidInput;

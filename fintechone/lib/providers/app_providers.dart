@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 import '../controller/account_controller.dart';
 import '../database/database.dart';
 import '../network/account_api.dart';
+import '../network/category_api.dart';
 import '../services/account_service.dart';
 import '../services/connectivity_service.dart';
 import '../services/sync_gate_service.dart';
@@ -130,6 +131,13 @@ class AppProviders extends StatelessWidget {
         ),
 
         // ── Feature: Categories ──
+        // Agora com CategoryApi disponível para sync/backup
+        ProxyProvider<TokenStorage, CategoryApi>(
+          update: (_, auth, __) => CategoryApi(
+            baseUrl: _backendBaseUrl,
+            getToken: auth.readToken,
+          ),
+        ),
         // Sem Api/sync por enquanto — é uma lista fixa, semeada localmente
         // (ver CategoryService._ensureSeeded). Quando categorias
         // personalizadas existirem, ganha um Api/sync igual as outras.

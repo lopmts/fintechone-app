@@ -30,6 +30,7 @@ export interface FinancingWithInstallments {
     totalPenaltiesAccrued: number;
 }
 export interface CreateFinancingInput {
+    id?: string;
     userId: string;
     title?: string | null;
     amount: number;

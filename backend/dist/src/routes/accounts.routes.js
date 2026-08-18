@@ -1,13 +1,22 @@
 import { prisma } from "../lib/prisma";
-import { createAccountSchema, updateAccountSchema, } from "../schemas/accounts";
+import { createAccountSchema, updateAccountSchema } from "../schemas/accounts";
 import { computeBalance } from "../utils/account-balance";
+import { randomUUID } from "../utils/random_uuid";
 export async function accountRoutes(app) {
     const auth = { onRequest: [app.authenticate] };
-    // GET /accounts
+    // GET /accounts (supports optional ?updatedSince=ISO)
     app.get("/", auth, async (request, reply) => {
         const { sub: userId } = request.user;
+        const { updatedSince } = request.query ?? {};
+        const where = { userId };
+        if (updatedSince) {
+            const sinceDate = new Date(updatedSince);
+            if (!isNaN(sinceDate.getTime())) {
+                where.updatedAt = { gt: sinceDate };
+            }
+        }
         const accounts = await prisma.account.findMany({
-            where: { userId },
+            where,
             orderBy: { createdAt: "asc" },
         });
         const accountsWithBalance = await Promise.all(accounts.map(async (a) => {
@@ -21,8 +30,7 @@ export async function accountRoutes(app) {
                 realBalance: realBalance.toNumber(),
             };
         }));
-        const totalRealBalance = accountsWithBalance.reduce((sum, a) => sum + a.realBalance, // já são numbers aqui
-        0);
+        const totalRealBalance = accountsWithBalance.reduce((sum, a) => sum + a.realBalance, 0);
         const totalSalary = accountsWithBalance.reduce((sum, a) => sum + (a.salary ?? 0), 0);
         return reply.send({
             accounts: accountsWithBalance,
@@ -37,10 +45,47 @@ export async function accountRoutes(app) {
         if (!result.success)
             return reply.status(400).send({ error: result.error.flatten() });
         const account = await prisma.account.create({
-            data: { ...result.data, userId },
+            data: { id: result.data.id ?? randomUUID(), ...result.data, userId },
         });
         return reply.status(201).send({
             account: { ...account, balance: 0, realBalance: account.initialBalance },
+        });
+    });
+    // PUT /accounts/:id  (upsert by client-provided id)
+    app.put("/:id", auth, async (request, reply) => {
+        const { sub: userId } = request.user;
+        const { id } = request.params;
+        const result = createAccountSchema.safeParse(request.body);
+        if (!result.success)
+            return reply.status(400).send({ error: result.error.flatten() });
+        // check if exists for this user
+        const exists = await prisma.account.findFirst({ where: { id, userId } });
+        if (exists) {
+            const account = await prisma.account.update({
+                where: { id },
+                data: result.data,
+            });
+            const txBalance = await computeBalance(id);
+            return reply.send({
+                account: {
+                    ...account,
+                    initialBalance: account.initialBalance.toNumber(),
+                    salary: account.salary?.toNumber() ?? null,
+                    balance: txBalance.toNumber(),
+                    realBalance: account.initialBalance.plus(txBalance).toNumber(),
+                },
+            });
+        }
+        // create with provided id and userId
+        const account = await prisma.account.create({
+            data: { id, ...result.data, userId },
+        });
+        return reply.status(201).send({
+            account: {
+                ...account,
+                balance: 0,
+                realBalance: account.initialBalance,
+            },
         });
     });
     // GET /accounts/:id

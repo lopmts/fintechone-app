@@ -75,6 +75,26 @@ app.get("/health", async () => ({
     },
     timestamp: new Date().toISOString(),
 }));
+app.setErrorHandler((error, request, reply) => {
+    app.log.error(error);
+    reply.status(500).send({
+        status: "error",
+        message: "Ocorreu um erro interno no servidor",
+    });
+});
+app.get("/logs", async (request, reply) => {
+    try {
+        const logs = await app.log;
+        reply.send(logs);
+    }
+    catch (error) {
+        app.log.error(error);
+        reply.status(500).send({
+            status: "error",
+            message: "Ocorreu um erro ao buscar os logs",
+        });
+    }
+});
 const start = async () => {
     try {
         const port = Number(process.env.PORT) || 3333;

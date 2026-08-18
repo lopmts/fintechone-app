@@ -104,6 +104,7 @@ function isOverdue(installment) {
 export async function createFinancing(input) {
     const financing = await prisma.financing.create({
         data: {
+            id: input.id,
             title: input.title || "",
             userId: input.userId,
             amount: new Prisma.Decimal(input.amount),

@@ -123,6 +123,28 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.session`: Exposes CRUD operations for the **Session** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Sessions
+      * const sessions = await prisma.session.findMany()
+      * ```
+      */
+    get session(): Prisma.SessionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.account`: Exposes CRUD operations for the **Account** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Accounts
+      * const accounts = await prisma.account.findMany()
+      * ```
+      */
+    get account(): Prisma.AccountDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.deleteRequest`: Exposes CRUD operations for the **DeleteRequest** model.
       * Example usage:
       * ```ts
@@ -142,17 +164,6 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get verificationCode(): Prisma.VerificationCodeDelegate<ExtArgs, {
-        omit: OmitOpts;
-    }>;
-    /**
-     * `prisma.account`: Exposes CRUD operations for the **Account** model.
-      * Example usage:
-      * ```ts
-      * // Fetch zero or more Accounts
-      * const accounts = await prisma.account.findMany()
-      * ```
-      */
-    get account(): Prisma.AccountDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     /**
@@ -219,6 +230,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get pushToken(): Prisma.PushTokenDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.syncLog`: Exposes CRUD operations for the **SyncLog** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more SyncLogs
+      * const syncLogs = await prisma.syncLog.findMany()
+      * ```
+      */
+    get syncLog(): Prisma.SyncLogDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
 }

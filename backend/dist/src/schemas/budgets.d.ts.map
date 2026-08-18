@@ -1,1 +1,1 @@
-{"version":3,"file":"budgets.d.ts","sourceRoot":"","sources":["../../../src/schemas/budgets.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,CAAC,EAAE,MAAM,QAAQ,CAAC;AAqB3B,eAAO,MAAM,kBAAkB;;;;;;;;;;;;;;;;;;;;;;;;;iBAG9B,CAAC;AAEF,eAAO,MAAM,kBAAkB;;;;;;;;;;;;;;;;;;;;;;;;;iBAEiB,CAAC"}
+{"version":3,"file":"budgets.d.ts","sourceRoot":"","sources":["../../../src/schemas/budgets.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,CAAC,EAAE,MAAM,QAAQ,CAAC;AAsB3B,eAAO,MAAM,kBAAkB;;;;;;;;;;;;;;;;;;;;;;;;;;iBAG9B,CAAC;AAEF,eAAO,MAAM,kBAAkB;;;;;;;;;;;;;;;;;;;;;;;;;;iBAEiB,CAAC"}

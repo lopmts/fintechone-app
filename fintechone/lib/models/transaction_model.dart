@@ -125,7 +125,7 @@ class TransactionModel {
     'receiptUrl': receiptUrl,
     'amount': amount,
     'type': type.backendValue,
-    'date': date.toIso8601String(),
+    'date': date.toUtc().toIso8601String(),
     'isRecurring': isRecurring,
     'installments': installments,
     'parentTransactionId': parentTransactionId,

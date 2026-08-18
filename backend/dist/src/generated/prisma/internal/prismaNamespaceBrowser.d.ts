@@ -42,15 +42,17 @@ export declare const AnyNull: {
 };
 export declare const ModelName: {
     readonly User: "User";
+    readonly Session: "Session";
+    readonly Account: "Account";
     readonly DeleteRequest: "DeleteRequest";
     readonly VerificationCode: "VerificationCode";
-    readonly Account: "Account";
     readonly Category: "Category";
     readonly Transaction: "Transaction";
     readonly Budget: "Budget";
     readonly Financing: "Financing";
     readonly InstallmentsPaid: "InstallmentsPaid";
     readonly PushToken: "PushToken";
+    readonly SyncLog: "SyncLog";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -67,15 +69,43 @@ export declare const UserScalarFieldEnum: {
     readonly email: "email";
     readonly codeuniq: "codeuniq";
     readonly password: "password";
-    readonly deletedAt: "deletedAt";
+    readonly provider: "provider";
+    readonly googleId: "googleId";
+    readonly emailVerified: "emailVerified";
+    readonly currency: "currency";
     readonly isActive: "isActive";
+    readonly syncVersion: "syncVersion";
+    readonly deletedAt: "deletedAt";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
-    readonly googleId: "googleId";
-    readonly provider: "provider";
-    readonly emailVerified: "emailVerified";
 };
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
+export declare const SessionScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly refreshTokenHash: "refreshTokenHash";
+    readonly expiresAt: "expiresAt";
+    readonly revokedAt: "revokedAt";
+    readonly createdAt: "createdAt";
+    readonly lastUsedAt: "lastUsedAt";
+};
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum];
+export declare const AccountScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly name: "name";
+    readonly type: "type";
+    readonly bank: "bank";
+    readonly initialBalance: "initialBalance";
+    readonly color: "color";
+    readonly icon: "icon";
+    readonly syncVersion: "syncVersion";
+    readonly salary: "salary";
+    readonly deletedAt: "deletedAt";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum];
 export declare const DeleteRequestScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
@@ -92,23 +122,15 @@ export declare const VerificationCodeScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type VerificationCodeScalarFieldEnum = (typeof VerificationCodeScalarFieldEnum)[keyof typeof VerificationCodeScalarFieldEnum];
-export declare const AccountScalarFieldEnum: {
-    readonly id: "id";
-    readonly userId: "userId";
-    readonly name: "name";
-    readonly initialBalance: "initialBalance";
-    readonly salary: "salary";
-    readonly type: "type";
-    readonly createdAt: "createdAt";
-    readonly updatedAt: "updatedAt";
-};
-export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum];
 export declare const CategoryScalarFieldEnum: {
     readonly id: "id";
     readonly key: "key";
     readonly name: "name";
     readonly icon: "icon";
     readonly color: "color";
+    readonly type: "type";
+    readonly syncVersion: "syncVersion";
+    readonly deletedAt: "deletedAt";
 };
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum];
 export declare const TransactionScalarFieldEnum: {
@@ -117,9 +139,17 @@ export declare const TransactionScalarFieldEnum: {
     readonly accountId: "accountId";
     readonly categoryId: "categoryId";
     readonly description: "description";
+    readonly notes: "notes";
+    readonly receiptUrl: "receiptUrl";
     readonly amount: "amount";
     readonly type: "type";
     readonly date: "date";
+    readonly isRecurring: "isRecurring";
+    readonly installments: "installments";
+    readonly parentTransactionId: "parentTransactionId";
+    readonly syncVersion: "syncVersion";
+    readonly deletedAt: "deletedAt";
+    readonly lastDeviceId: "lastDeviceId";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -130,10 +160,12 @@ export declare const BudgetScalarFieldEnum: {
     readonly categoryId: "categoryId";
     readonly name: "name";
     readonly amount: "amount";
-    readonly isActive: "isActive";
     readonly period: "period";
     readonly startDate: "startDate";
     readonly endDate: "endDate";
+    readonly isActive: "isActive";
+    readonly syncVersion: "syncVersion";
+    readonly deletedAt: "deletedAt";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -170,6 +202,14 @@ export declare const PushTokenScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type PushTokenScalarFieldEnum = (typeof PushTokenScalarFieldEnum)[keyof typeof PushTokenScalarFieldEnum];
+export declare const SyncLogScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly deviceId: "deviceId";
+    readonly lastSyncAt: "lastSyncAt";
+    readonly createdAt: "createdAt";
+};
+export type SyncLogScalarFieldEnum = (typeof SyncLogScalarFieldEnum)[keyof typeof SyncLogScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

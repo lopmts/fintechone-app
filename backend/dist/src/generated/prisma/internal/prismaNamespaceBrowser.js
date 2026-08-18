@@ -40,15 +40,17 @@ export const JsonNull = runtime.objectEnumValues.instances.JsonNull;
 export const AnyNull = runtime.objectEnumValues.instances.AnyNull;
 export const ModelName = {
     User: 'User',
+    Session: 'Session',
+    Account: 'Account',
     DeleteRequest: 'DeleteRequest',
     VerificationCode: 'VerificationCode',
-    Account: 'Account',
     Category: 'Category',
     Transaction: 'Transaction',
     Budget: 'Budget',
     Financing: 'Financing',
     InstallmentsPaid: 'InstallmentsPaid',
-    PushToken: 'PushToken'
+    PushToken: 'PushToken',
+    SyncLog: 'SyncLog'
 };
 /*
  * Enums
@@ -66,13 +68,39 @@ export const UserScalarFieldEnum = {
     email: 'email',
     codeuniq: 'codeuniq',
     password: 'password',
-    deletedAt: 'deletedAt',
-    isActive: 'isActive',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    googleId: 'googleId',
     provider: 'provider',
-    emailVerified: 'emailVerified'
+    googleId: 'googleId',
+    emailVerified: 'emailVerified',
+    currency: 'currency',
+    isActive: 'isActive',
+    syncVersion: 'syncVersion',
+    deletedAt: 'deletedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const SessionScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    refreshTokenHash: 'refreshTokenHash',
+    expiresAt: 'expiresAt',
+    revokedAt: 'revokedAt',
+    createdAt: 'createdAt',
+    lastUsedAt: 'lastUsedAt'
+};
+export const AccountScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    type: 'type',
+    bank: 'bank',
+    initialBalance: 'initialBalance',
+    color: 'color',
+    icon: 'icon',
+    syncVersion: 'syncVersion',
+    salary: 'salary',
+    deletedAt: 'deletedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 export const DeleteRequestScalarFieldEnum = {
     id: 'id',
@@ -88,22 +116,15 @@ export const VerificationCodeScalarFieldEnum = {
     usedAt: 'usedAt',
     createdAt: 'createdAt'
 };
-export const AccountScalarFieldEnum = {
-    id: 'id',
-    userId: 'userId',
-    name: 'name',
-    initialBalance: 'initialBalance',
-    salary: 'salary',
-    type: 'type',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-};
 export const CategoryScalarFieldEnum = {
     id: 'id',
     key: 'key',
     name: 'name',
     icon: 'icon',
-    color: 'color'
+    color: 'color',
+    type: 'type',
+    syncVersion: 'syncVersion',
+    deletedAt: 'deletedAt'
 };
 export const TransactionScalarFieldEnum = {
     id: 'id',
@@ -111,9 +132,17 @@ export const TransactionScalarFieldEnum = {
     accountId: 'accountId',
     categoryId: 'categoryId',
     description: 'description',
+    notes: 'notes',
+    receiptUrl: 'receiptUrl',
     amount: 'amount',
     type: 'type',
     date: 'date',
+    isRecurring: 'isRecurring',
+    installments: 'installments',
+    parentTransactionId: 'parentTransactionId',
+    syncVersion: 'syncVersion',
+    deletedAt: 'deletedAt',
+    lastDeviceId: 'lastDeviceId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -123,10 +152,12 @@ export const BudgetScalarFieldEnum = {
     categoryId: 'categoryId',
     name: 'name',
     amount: 'amount',
-    isActive: 'isActive',
     period: 'period',
     startDate: 'startDate',
     endDate: 'endDate',
+    isActive: 'isActive',
+    syncVersion: 'syncVersion',
+    deletedAt: 'deletedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -157,6 +188,13 @@ export const PushTokenScalarFieldEnum = {
     id: 'id',
     userId: 'userId',
     token: 'token',
+    createdAt: 'createdAt'
+};
+export const SyncLogScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    deviceId: 'deviceId',
+    lastSyncAt: 'lastSyncAt',
     createdAt: 'createdAt'
 };
 export const SortOrder = {

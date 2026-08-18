@@ -1,6 +1,7 @@
 import { Decimal } from "@prisma/client/runtime/library";
 import { prisma } from "../lib/prisma";
-import { createBudgetSchema, updateBudgetSchema, } from "../schemas/budgets";
+import { createBudgetSchema, updateBudgetSchema } from "../schemas/budgets";
+import { randomUUID } from "../utils/random_uuid";
 export async function budgetRoutes(app) {
     const auth = { onRequest: [app.authenticate] };
     // GET /budgets  — lista orçamentos com progresso atual
@@ -68,6 +69,7 @@ export async function budgetRoutes(app) {
         }
         const budget = await prisma.budget.create({
             data: {
+                id: result.data.id ?? randomUUID(),
                 ...rest,
                 categoryId: resolvedCategoryId,
                 userId,
